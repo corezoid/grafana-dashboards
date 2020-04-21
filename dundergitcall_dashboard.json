@@ -16,7 +16,7 @@
   "gnetId": null,
   "graphTooltip": 0,
   "id": 39,
-  "iteration": 1585912496102,
+  "iteration": 1587479899790,
   "links": [],
   "panels": [
     {
@@ -60,7 +60,8 @@
       "steppedLine": false,
       "targets": [
         {
-          "expr": "rate(dundergitcall_usercode_task_time_ms_count{owner_id=\"$owner_id\"}[2m])",
+          "expr": "rate(dundergitcall_usercode_duration_seconds_count{owner_id=\"$owner_id\", group_id=\"$group_id\"}[2m])",
+          "legendFormat": "{{owner_id}}-{{group_id}}",
           "refId": "A"
         }
       ],
@@ -111,8 +112,8 @@
       "dashLength": 10,
       "dashes": false,
       "datasource": null,
-      "fill": 1,
-      "fillGradient": 0,
+      "fill": 10,
+      "fillGradient": 6,
       "gridPos": {
         "h": 9,
         "w": 24,
@@ -146,21 +147,26 @@
       "steppedLine": false,
       "targets": [
         {
-          "expr": "histogram_quantile(0.95, sum(rate(dundergitcall_usercode_task_time_ms_bucket[5m])) by (le))",
-          "legendFormat": "0.95 percentile (ms)",
-          "refId": "A"
+          "expr": "consumer_consume_expire_seconds{tier=\"dundergitcal\",consumer=\"run_task\"}",
+          "legendFormat": "",
+          "refId": "B"
         },
         {
-          "expr": "histogram_quantile(0.50, sum(rate(dundergitcall_usercode_task_time_ms_bucket[5m])) by (le))",
-          "legendFormat": "0.50 percentile (ms)",
+          "expr": "sum by (instance) (\n   avg(dundergitcall_usercode_duration_seconds_sum / dundergitcall_usercode_duration_seconds_count) +\n   avg(dundergitcall_usercode_wait_duration_seconds_sum / dundergitcall_usercode_wait_duration_seconds_count)\n)",
+          "legendFormat": "0.95 percentile (ms)",
           "refId": "C"
+        },
+        {
+          "expr": "sum by (instance) (\n   avg(dundergitcall_usercode_duration_seconds_sum / dundergitcall_usercode_duration_seconds_count)\n)",
+          "legendFormat": "0.95 percentile (ms)",
+          "refId": "A"
         }
       ],
       "thresholds": [],
       "timeFrom": null,
       "timeRegions": [],
       "timeShift": null,
-      "title": "task duration 0.95 vs 0.5 percentile",
+      "title": "Task Duration LOG2 Time",
       "tooltip": {
         "shared": true,
         "sort": 0,
@@ -178,7 +184,7 @@
         {
           "format": "short",
           "label": null,
-          "logBase": 1,
+          "logBase": 2,
           "max": null,
           "min": null,
           "show": true
@@ -204,10 +210,10 @@
   "templating": {
     "list": [
       {
-        "allValue": null,
+        "allValue": ".*",
         "current": {
-          "text": "10",
-          "value": "10"
+          "text": "6",
+          "value": "6"
         },
         "datasource": "Prometheus",
         "definition": "label_values(dundergitcall_usercode_task_time_ms_count, owner_id)",
@@ -229,7 +235,7 @@
         "useTags": false
       },
       {
-        "allValue": null,
+        "allValue": ".*",
         "current": {
           "text": "2",
           "value": "2"
@@ -239,23 +245,23 @@
         "hide": 0,
         "includeAll": false,
         "label": "Group",
-        "multi": true,
+        "multi": false,
         "name": "group_id",
         "options": [
           {
+            "selected": false,
+            "text": "81",
+            "value": "81"
+          },
+          {
+            "selected": false,
+            "text": "84",
+            "value": "84"
+          },
+          {
             "selected": true,
-            "text": "2",
-            "value": "2"
-          },
-          {
-            "selected": false,
-            "text": "73",
-            "value": "73"
-          },
-          {
-            "selected": false,
-            "text": "83",
-            "value": "83"
+            "text": "88",
+            "value": "88"
           }
         ],
         "query": "label_values(dundergitcall_usercode_task_time_ms_count{owner_id=~\"$owner_id\"}, group_id)",
@@ -272,7 +278,7 @@
     ]
   },
   "time": {
-    "from": "now-6h",
+    "from": "now-15m",
     "to": "now"
   },
   "timepicker": {
@@ -292,5 +298,5 @@
   "timezone": "",
   "title": "Dundergitcall",
   "uid": "ZW_9CRCZz",
-  "version": 5
+  "version": 14
 }
