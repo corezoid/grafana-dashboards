@@ -59,19 +59,24 @@
       "steppedLine": false,
       "targets": [
         {
-          "expr": "sum(rate(dundergitcall_usercode_duration_seconds_count{result=\"done\"}[5m]))",
-          "legendFormat": "done",
+          "expr": "sum(rate(dundergitcall_usercode_duration_seconds_count[5m]))",
+          "legendFormat": "all",
           "refId": "A"
-        },
-        {
-          "expr": "sum(rate(dundergitcall_usercode_duration_seconds_count{result=\"error\"}[5m]))",
-          "legendFormat": "error",
-          "refId": "B"
         },
         {
           "expr": "sum(rate(dundergitcall_usercode_duration_seconds_count{result=\"internal_error\"}[5m]))",
           "legendFormat": "internal_error",
           "refId": "C"
+        },
+        {
+          "expr": "sum(rate(dundergitcall_usercode_duration_seconds_count{result=\"done\"}[5m]))",
+          "legendFormat": "done",
+          "refId": "D"
+        },
+        {
+          "expr": "sum(rate(dundergitcall_usercode_duration_seconds_count{result=\"error\"}[5m]))",
+          "legendFormat": "error",
+          "refId": "B"
         }
       ],
       "thresholds": [],
@@ -230,5 +235,5 @@
   "timezone": "",
   "title": "Dundergitcall Overview",
   "uid": "4kHhcBqWk",
-  "version": 4
+  "version": 5
 }

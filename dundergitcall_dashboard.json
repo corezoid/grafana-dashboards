@@ -16,7 +16,7 @@
   "gnetId": null,
   "graphTooltip": 0,
   "id": 39,
-  "iteration": 1587480491389,
+  "iteration": 1587745247576,
   "links": [],
   "panels": [
     {
@@ -60,16 +60,31 @@
       "steppedLine": false,
       "targets": [
         {
-          "expr": "\n   rate(dundergitcall_usercode_duration_seconds_count{owner_id=\"$owner_id\", group_id=\"$group_id\"}[2m])\n",
-          "legendFormat": "{{instance}}",
+          "expr": "sum(\n   rate(dundergitcall_usercode_duration_seconds_count{owner_id=\"$owner_id\", group_id=\"$group_id\"}[5m])\n) by (instance)\n",
+          "legendFormat": "{{instance}} - all",
           "refId": "A"
+        },
+        {
+          "expr": "sum(\n   rate(dundergitcall_usercode_duration_seconds_count{owner_id=\"$owner_id\", group_id=\"$group_id\",result=\"done\"}[5m])\n) by (instance)\n",
+          "legendFormat": "{{instance}} - done",
+          "refId": "B"
+        },
+        {
+          "expr": "sum(\n   rate(dundergitcall_usercode_duration_seconds_count{owner_id=\"$owner_id\", group_id=\"$group_id\",result=\"error\"}[5m])\n) by (instance)\n",
+          "legendFormat": "{{instance}} - error",
+          "refId": "C"
+        },
+        {
+          "expr": "sum(\n   rate(dundergitcall_usercode_duration_seconds_count{owner_id=\"$owner_id\", group_id=\"$group_id\",result=\"internal_error\"}[5m])\n) by (instance)\n",
+          "legendFormat": "{{instance}} - internal error",
+          "refId": "D"
         }
       ],
       "thresholds": [],
       "timeFrom": null,
       "timeRegions": [],
       "timeShift": null,
-      "title": "task rate",
+      "title": "Task , Rate",
       "tooltip": {
         "shared": true,
         "sort": 0,
@@ -148,17 +163,17 @@
       "steppedLine": false,
       "targets": [
         {
-          "expr": "consumer_consume_expire_seconds{tier=\"dundergitcal\",consumer=\"run_task\"}",
+          "expr": "sum(consumer_consume_expire_seconds{tier=\"dundergitcal\",consumer=\"run_task\",owner_id=\"$owner_id\", group_id=\"$group_id\"})",
           "legendFormat": "{{instance}}",
           "refId": "B"
         },
         {
-          "expr": "sum by (instance) (\n   avg(dundergitcall_usercode_duration_seconds_sum / dundergitcall_usercode_duration_seconds_count) +\n   avg(dundergitcall_usercode_wait_duration_seconds_sum / dundergitcall_usercode_wait_duration_seconds_count)\n)",
-          "legendFormat": "wait server",
+          "expr": "sum by (instance) (\n   rate(dundergitcall_usercode_wait_duration_seconds_sum{owner_id=\"$owner_id\", group_id=\"$group_id\"}[2m]) +       \n   rate(dundergitcall_usercode_duration_seconds_sum{owner_id=\"$owner_id\", group_id=\"$group_id\"}[2m])\n) \n/ \nsum by (instance) (\n    rate(dundergitcall_usercode_wait_duration_seconds_count{owner_id=\"$owner_id\", group_id=\"$group_id\"}[2m]) + \n    rate(dundergitcall_usercode_duration_seconds_count{owner_id=\"$owner_id\", group_id=\"$group_id\"}[2m])\n)",
+          "legendFormat": "wait duration",
           "refId": "C"
         },
         {
-          "expr": "sum by (instance) (\n   avg(dundergitcall_usercode_duration_seconds_sum / dundergitcall_usercode_duration_seconds_count)\n)",
+          "expr": "  sum by (instance) (rate(dundergitcall_usercode_duration_seconds_sum{owner_id=\"$owner_id\", group_id=\"$group_id\"}[2m]))\n/\n  sum by (instance) (rate(dundergitcall_usercode_duration_seconds_count{owner_id=\"$owner_id\", group_id=\"$group_id\"}[2m]))",
           "legendFormat": "task duration",
           "refId": "A"
         }
@@ -167,7 +182,7 @@
       "timeFrom": null,
       "timeRegions": [],
       "timeShift": null,
-      "title": "Task Duration LOG2 Time",
+      "title": "Task Duration, Avg LOG2 Time",
       "tooltip": {
         "shared": true,
         "sort": 0,
@@ -205,6 +220,7 @@
       }
     }
   ],
+  "refresh": false,
   "schemaVersion": 22,
   "style": "dark",
   "tags": [],
@@ -217,15 +233,15 @@
           "value": "6"
         },
         "datasource": "Prometheus",
-        "definition": "label_values(dundergitcall_usercode_task_time_ms_count, owner_id)",
+        "definition": "label_values(dundergitcall_usercode_duration_seconds_count, owner_id)",
         "hide": 0,
         "includeAll": false,
         "label": "Owner",
         "multi": false,
         "name": "owner_id",
         "options": [],
-        "query": "label_values(dundergitcall_usercode_task_time_ms_count, owner_id)",
-        "refresh": 1,
+        "query": "label_values(dundergitcall_usercode_duration_seconds_count, owner_id)",
+        "refresh": 2,
         "regex": "",
         "skipUrlSync": false,
         "sort": 0,
@@ -238,11 +254,12 @@
       {
         "allValue": ".*",
         "current": {
-          "text": "2",
-          "value": "2"
+          "selected": true,
+          "text": "69",
+          "value": "69"
         },
         "datasource": "Prometheus",
-        "definition": "label_values(dundergitcall_usercode_task_time_ms_count{owner_id=~\"$owner_id\"}, group_id)",
+        "definition": "label_values(dundergitcall_usercode_duration_seconds_count{owner_id=~\"$owner_id\"}, group_id)",
         "hide": 0,
         "includeAll": false,
         "label": "Group",
@@ -251,21 +268,31 @@
         "options": [
           {
             "selected": false,
-            "text": "81",
-            "value": "81"
+            "text": "64",
+            "value": "64"
           },
           {
             "selected": false,
-            "text": "84",
-            "value": "84"
+            "text": "66",
+            "value": "66"
+          },
+          {
+            "selected": false,
+            "text": "65",
+            "value": "65"
           },
           {
             "selected": true,
-            "text": "88",
-            "value": "88"
+            "text": "69",
+            "value": "69"
+          },
+          {
+            "selected": false,
+            "text": "67",
+            "value": "67"
           }
         ],
-        "query": "label_values(dundergitcall_usercode_task_time_ms_count{owner_id=~\"$owner_id\"}, group_id)",
+        "query": "label_values(dundergitcall_usercode_duration_seconds_count{owner_id=~\"$owner_id\"}, group_id)",
         "refresh": 0,
         "regex": "",
         "skipUrlSync": false,
@@ -299,5 +326,5 @@
   "timezone": "",
   "title": "Dundergitcall",
   "uid": "ZW_9CRCZz",
-  "version": 15
+  "version": 24
 }
