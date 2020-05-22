@@ -16,7 +16,7 @@
   "gnetId": null,
   "graphTooltip": 0,
   "id": 39,
-  "iteration": 1589878379399,
+  "iteration": 1590057957578,
   "links": [],
   "panels": [
     {
@@ -393,7 +393,7 @@
       "steppedLine": false,
       "targets": [
         {
-          "expr": "sum(\n   irate(dundergitcall_usercode_duration_seconds_count{owner_id=~\"$owner_id\", group_id=~\"$group_id\",service_id=~\"$service_id\",result=\"done\"}[5m])\n) by (owner_id,group_id,service_id)\n",
+          "expr": "sum(\n   irate(dundergitcall_usercode_duration_seconds_count{owner_id=~\"$owner_id\", group_id=~\"$group_id\",service_id=~\"$service_id\",result=\"done\"}[10m])\n) by (owner_id,group_id,service_id)\n",
           "legendFormat": "done {{owner_id}}-{{group_id}}-{{service_id}}",
           "refId": "B"
         }
@@ -574,9 +574,9 @@
       "steppedLine": false,
       "targets": [
         {
-          "expr": "  sum by (owner_id,group_id,service_id) (irate(dundergitcall_usercode_wait_duration_seconds_sum{owner_id=~\"$owner_id\", group_id=~\"$group_id\",service_id=~\"$service_id\"}[2m]))\n/\n  sum by (owner_id,group_id,service_id) (irate(dundergitcall_usercode_wait_duration_seconds_count{owner_id=~\"$owner_id\", group_id=~\"$group_id\",service_id=~\"$service_id\"}[2m]))",
+          "expr": "\n  \n      sum by (owner_id,group_id,service_id) (irate(dundergitcall_usercode_wait_duration_seconds_sum{owner_id=~\"$owner_id\", group_id=~\"$group_id\",service_id=~\"$service_id\"}[10m]))\n/\n  sum by (owner_id,group_id,service_id) (irate(dundergitcall_usercode_wait_duration_seconds_count{owner_id=~\"$owner_id\", group_id=~\"$group_id\",service_id=~\"$service_id\"}[10m]))\n  \n",
           "legendFormat": "{{owner_id}}-{{group_id}}-{{service_id}}",
-          "refId": "A"
+          "refId": "B"
         }
       ],
       "thresholds": [],
@@ -626,6 +626,93 @@
       "dashLength": 10,
       "dashes": false,
       "datasource": null,
+      "fill": 1,
+      "fillGradient": 0,
+      "gridPos": {
+        "h": 10,
+        "w": 24,
+        "x": 0,
+        "y": 36
+      },
+      "hiddenSeries": false,
+      "id": 24,
+      "legend": {
+        "avg": false,
+        "current": false,
+        "max": false,
+        "min": false,
+        "show": true,
+        "total": false,
+        "values": false
+      },
+      "lines": true,
+      "linewidth": 1,
+      "nullPointMode": "null",
+      "options": {
+        "dataLinks": []
+      },
+      "percentage": false,
+      "pointradius": 2,
+      "points": false,
+      "renderer": "flot",
+      "seriesOverrides": [],
+      "spaceLength": 10,
+      "stack": false,
+      "steppedLine": false,
+      "targets": [
+        {
+          "expr": "# (active connections) - (avg duration * msg rate) = 0\n\n# duration\n( \n\n  (\n    avg  by (owner_id,group_id,service_id) (rate(dundergitcall_usercode_duration_seconds_sum{owner_id=~\"$owner_id\", group_id=~\"$group_id\",service_id=~\"$service_id\"}[10m]))\n    /\n    avg  by (owner_id,group_id,service_id) (rate(dundergitcall_usercode_duration_seconds_count{owner_id=~\"$owner_id\", group_id=~\"$group_id\",service_id=~\"$service_id\"}[10m]))\n  )\n  +\n  (\n    avg by (owner_id,group_id,service_id) (irate(dundergitcall_usercode_wait_duration_seconds_sum{owner_id=~\"$owner_id\", group_id=~\"$group_id\",service_id=~\"$service_id\"}[10m]))\n    /\n    avg by (owner_id,group_id,service_id) (irate(dundergitcall_usercode_wait_duration_seconds_count{owner_id=~\"$owner_id\", group_id=~\"$group_id\",service_id=~\"$service_id\"}[10m]))  \n  )\n  \n) * (\n# rate \n  avg(\n    irate(dundergitcall_usercode_duration_seconds_count{owner_id=~\"6\", group_id=~\"3\",service_id=~\"5ec58149cbc66b0007000008\"}[10m])\n ) by (owner_id,group_id,service_id)\n)",
+          "legendFormat": "{{owner_id}}-{{group_id}}-{{service_id}}",
+          "refId": "C"
+        }
+      ],
+      "thresholds": [],
+      "timeFrom": null,
+      "timeRegions": [],
+      "timeShift": null,
+      "title": "Desired connections",
+      "tooltip": {
+        "shared": true,
+        "sort": 0,
+        "value_type": "individual"
+      },
+      "type": "graph",
+      "xaxis": {
+        "buckets": null,
+        "mode": "time",
+        "name": null,
+        "show": true,
+        "values": []
+      },
+      "yaxes": [
+        {
+          "format": "short",
+          "label": null,
+          "logBase": 1,
+          "max": null,
+          "min": null,
+          "show": true
+        },
+        {
+          "format": "short",
+          "label": null,
+          "logBase": 1,
+          "max": null,
+          "min": null,
+          "show": true
+        }
+      ],
+      "yaxis": {
+        "align": false,
+        "alignLevel": null
+      }
+    },
+    {
+      "aliasColors": {},
+      "bars": false,
+      "dashLength": 10,
+      "dashes": false,
+      "datasource": null,
       "decimals": 0,
       "fill": 5,
       "fillGradient": 0,
@@ -633,7 +720,7 @@
         "h": 9,
         "w": 24,
         "x": 0,
-        "y": 36
+        "y": 46
       },
       "hiddenSeries": false,
       "id": 22,
@@ -667,7 +754,7 @@
       "targets": [
         {
           "expr": "sum by (owner_id,group_id,service_id)(dundergitcall_usercode_active_connections{owner_id=~\"$owner_id\", group_id=~\"$group_id\",service_id=~\"$service_id\"})",
-          "legendFormat": "{{owner_id}}-{{group_id}}-{{service_id}} {{instance}}",
+          "legendFormat": "{{owner_id}}-{{group_id}}-{{service_id}}",
           "refId": "A"
         }
       ],
@@ -719,7 +806,7 @@
         "h": 1,
         "w": 24,
         "x": 0,
-        "y": 45
+        "y": 55
       },
       "id": 21,
       "panels": [],
@@ -738,7 +825,7 @@
         "h": 8,
         "w": 24,
         "x": 0,
-        "y": 46
+        "y": 56
       },
       "hiddenSeries": false,
       "id": 12,
@@ -830,7 +917,7 @@
         "h": 8,
         "w": 24,
         "x": 0,
-        "y": 54
+        "y": 64
       },
       "hiddenSeries": false,
       "id": 13,
@@ -917,7 +1004,7 @@
         "h": 9,
         "w": 24,
         "x": 0,
-        "y": 62
+        "y": 72
       },
       "hiddenSeries": false,
       "id": 11,
@@ -1028,9 +1115,10 @@
       {
         "allValue": ".*",
         "current": {
-          "selected": false,
-          "text": "All",
-          "value": "$__all"
+          "text": "3",
+          "value": [
+            "3"
+          ]
         },
         "datasource": "Prometheus",
         "definition": "label_values(dundergitcall_usercode_duration_seconds_count{owner_id=~\"$owner_id\"}, group_id)",
@@ -1041,19 +1129,14 @@
         "name": "group_id",
         "options": [
           {
-            "selected": true,
+            "selected": false,
             "text": "All",
             "value": "$__all"
           },
           {
-            "selected": false,
-            "text": "346",
-            "value": "346"
-          },
-          {
-            "selected": false,
-            "text": "345",
-            "value": "345"
+            "selected": true,
+            "text": "3",
+            "value": "3"
           }
         ],
         "query": "label_values(dundergitcall_usercode_duration_seconds_count{owner_id=~\"$owner_id\"}, group_id)",
@@ -1070,9 +1153,9 @@
       {
         "allValue": ".*",
         "current": {
-          "text": "All",
+          "text": "5ec58149cbc66b0007000008",
           "value": [
-            "$__all"
+            "5ec58149cbc66b0007000008"
           ]
         },
         "datasource": "Prometheus",
@@ -1084,9 +1167,14 @@
         "name": "service_id",
         "options": [
           {
-            "selected": true,
+            "selected": false,
             "text": "All",
             "value": "$__all"
+          },
+          {
+            "selected": true,
+            "text": "5ec58149cbc66b0007000008",
+            "value": "5ec58149cbc66b0007000008"
           }
         ],
         "query": "label_values(dundergitcall_usercode_duration_seconds_count{owner_id=~\"$owner_id\", group_id=~\"$group_id\"}, service_id)",
@@ -1103,7 +1191,7 @@
     ]
   },
   "time": {
-    "from": "now-15m",
+    "from": "now-30m",
     "to": "now"
   },
   "timepicker": {
@@ -1123,5 +1211,5 @@
   "timezone": "",
   "title": "Dundergitcall",
   "uid": "ZW_9CRCZz",
-  "version": 63
+  "version": 65
 }
