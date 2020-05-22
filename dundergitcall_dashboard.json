@@ -16,7 +16,7 @@
   "gnetId": null,
   "graphTooltip": 0,
   "id": 39,
-  "iteration": 1590057957580,
+  "iteration": 1590132851669,
   "links": [],
   "panels": [
     {
@@ -339,20 +339,6 @@
       "valueName": "current"
     },
     {
-      "collapsed": false,
-      "datasource": null,
-      "gridPos": {
-        "h": 1,
-        "w": 24,
-        "x": 0,
-        "y": 8
-      },
-      "id": 19,
-      "panels": [],
-      "title": "Tasks",
-      "type": "row"
-    },
-    {
       "aliasColors": {},
       "bars": true,
       "dashLength": 10,
@@ -364,7 +350,7 @@
         "h": 8,
         "w": 24,
         "x": 0,
-        "y": 9
+        "y": 8
       },
       "hiddenSeries": false,
       "id": 4,
@@ -438,6 +424,20 @@
         "align": false,
         "alignLevel": null
       }
+    },
+    {
+      "collapsed": false,
+      "datasource": null,
+      "gridPos": {
+        "h": 1,
+        "w": 24,
+        "x": 0,
+        "y": 16
+      },
+      "id": 19,
+      "panels": [],
+      "title": "Tasks",
+      "type": "row"
     },
     {
       "aliasColors": {},
@@ -1192,7 +1192,7 @@
     ]
   },
   "time": {
-    "from": "now-30m",
+    "from": "now-15m",
     "to": "now"
   },
   "timepicker": {
@@ -1212,5 +1212,5 @@
   "timezone": "",
   "title": "Dundergitcall",
   "uid": "ZW_9CRCZz",
-  "version": 66
+  "version": 67
 }
