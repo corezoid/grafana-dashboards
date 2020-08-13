@@ -16,7 +16,7 @@
   "gnetId": null,
   "graphTooltip": 0,
   "id": 39,
-  "iteration": 1596188178584,
+  "iteration": 1597317351493,
   "links": [],
   "panels": [
     {
@@ -339,6 +339,72 @@
       "valueName": "current"
     },
     {
+      "cards": {
+        "cardPadding": null,
+        "cardRound": null
+      },
+      "color": {
+        "cardColor": "#37872D",
+        "colorScale": "sqrt",
+        "colorScheme": "interpolateReds",
+        "exponent": 0.25,
+        "mode": "opacity"
+      },
+      "dataFormat": "tsbuckets",
+      "datasource": "Prometheus",
+      "gridPos": {
+        "h": 8,
+        "w": 24,
+        "x": 0,
+        "y": 8
+      },
+      "heatmap": {},
+      "hideZeroBuckets": true,
+      "highlightCards": true,
+      "id": 26,
+      "legend": {
+        "show": true
+      },
+      "options": {},
+      "pluginVersion": "6.6.0",
+      "reverseYBuckets": false,
+      "targets": [
+        {
+          "expr": "sum(rate(dundergitcall_usercode_duration_seconds_bucket{owner_id=~\"$owner_id\", group_id=~\"$group_id\",service_id=~\"$service_id\"}[5m])) by (le)",
+          "format": "heatmap",
+          "hide": false,
+          "instant": false,
+          "legendFormat": "{{le}}",
+          "refId": "A"
+        }
+      ],
+      "timeFrom": null,
+      "timeShift": null,
+      "title": "Task Duration",
+      "tooltip": {
+        "show": true,
+        "showHistogram": true
+      },
+      "type": "heatmap",
+      "xAxis": {
+        "show": true
+      },
+      "xBucketNumber": null,
+      "xBucketSize": null,
+      "yAxis": {
+        "decimals": 1,
+        "format": "s",
+        "logBase": 1,
+        "max": null,
+        "min": null,
+        "show": true,
+        "splitFactor": null
+      },
+      "yBucketBound": "auto",
+      "yBucketNumber": null,
+      "yBucketSize": null
+    },
+    {
       "aliasColors": {},
       "bars": true,
       "dashLength": 10,
@@ -350,7 +416,7 @@
         "h": 8,
         "w": 24,
         "x": 0,
-        "y": 8
+        "y": 16
       },
       "hiddenSeries": false,
       "id": 4,
@@ -432,7 +498,7 @@
         "h": 1,
         "w": 24,
         "x": 0,
-        "y": 16
+        "y": 24
       },
       "id": 19,
       "panels": [],
@@ -451,7 +517,7 @@
         "h": 10,
         "w": 24,
         "x": 0,
-        "y": 17
+        "y": 25
       },
       "hiddenSeries": false,
       "id": 2,
@@ -542,7 +608,7 @@
         "h": 9,
         "w": 24,
         "x": 0,
-        "y": 27
+        "y": 35
       },
       "hiddenSeries": false,
       "id": 6,
@@ -575,8 +641,13 @@
       "targets": [
         {
           "expr": "sum by (owner_id,group_id,service_id) (irate(dundergitcall_usercode_wait_duration_seconds_sum{owner_id=~\"$owner_id\", group_id=~\"$group_id\",service_id=~\"$service_id\"}[10m]))\n/\nsum by (owner_id,group_id,service_id) (irate(dundergitcall_usercode_wait_duration_seconds_count{owner_id=~\"$owner_id\", group_id=~\"$group_id\",service_id=~\"$service_id\"}[10m]))",
-          "legendFormat": "{{owner_id}}-{{group_id}}-{{service_id}}",
+          "legendFormat": "instant {{owner_id}}-{{group_id}}-{{service_id}}",
           "refId": "B"
+        },
+        {
+          "expr": "sum by (owner_id,group_id,service_id) (rate(dundergitcall_usercode_wait_duration_seconds_sum{owner_id=~\"$owner_id\", group_id=~\"$group_id\",service_id=~\"$service_id\"}[5m]))\n/\nsum by (owner_id,group_id,service_id) (rate(dundergitcall_usercode_wait_duration_seconds_count{owner_id=~\"$owner_id\", group_id=~\"$group_id\",service_id=~\"$service_id\"}[5m]))",
+          "legendFormat": "average {{owner_id}}-{{group_id}}-{{service_id}}",
+          "refId": "A"
         }
       ],
       "thresholds": [],
@@ -633,7 +704,7 @@
         "h": 10,
         "w": 24,
         "x": 0,
-        "y": 36
+        "y": 44
       },
       "hiddenSeries": false,
       "id": 24,
@@ -659,13 +730,23 @@
       "renderer": "flot",
       "seriesOverrides": [],
       "spaceLength": 10,
-      "stack": true,
+      "stack": false,
       "steppedLine": false,
       "targets": [
         {
-          "expr": "# (active connections) - (avg duration * msg rate) = 0\n\n# duration\n( \n\n  (\n    sum  by (owner_id,group_id,service_id) (rate(dundergitcall_usercode_duration_seconds_sum{owner_id=~\"$owner_id\", group_id=~\"$group_id\",service_id=~\"$service_id\"}[10m]))\n    /\n    sum  by (owner_id,group_id,service_id) (rate(dundergitcall_usercode_duration_seconds_count{owner_id=~\"$owner_id\", group_id=~\"$group_id\",service_id=~\"$service_id\"}[10m]))\n  )\n  \n) * (\n# rate \n  sum(\n    irate(dundergitcall_usercode_duration_seconds_count{owner_id=~\"$owner_id\", group_id=~\"$group_id\",service_id=~\"$service_id\"}[10m])\n ) by (owner_id,group_id,service_id)\n)\n\n",
+          "expr": "# (active connections) - (avg duration * msg rate) = 0\n\n# duration\n( \n\n  (\n    sum  by (owner_id,group_id,service_id) (rate(dundergitcall_usercode_duration_seconds_sum{owner_id=~\"$owner_id\", group_id=~\"$group_id\",service_id=~\"$service_id\"}[10m]))\n    /\n    sum  by (owner_id,group_id,service_id) (rate(dundergitcall_usercode_duration_seconds_count{owner_id=~\"$owner_id\", group_id=~\"$group_id\",service_id=~\"$service_id\"}[10m]))\n  )\n  \n) * (\n# rate \n  sum(\n    irate(dundergitcall_usercode_duration_seconds_count{owner_id=~\"$owner_id\", group_id=~\"$group_id\",service_id=~\"$service_id\"}[10m])\n ) by (owner_id,group_id,service_id)\n)\n",
           "legendFormat": "{{owner_id}}-{{group_id}}-{{service_id}}",
-          "refId": "C"
+          "refId": "A"
+        },
+        {
+          "expr": "# (active connections) - (avg duration * msg rate) = 0\n\n# duration\n( \n\n  (\n    sum  by (owner_id,group_id,service_id) (rate(dundergitcall_usercode_duration_seconds_sum{owner_id=~\"$owner_id\", group_id=~\"$group_id\",service_id=~\"$service_id\"}[10m]))\n    /\n    sum  by (owner_id,group_id,service_id) (rate(dundergitcall_usercode_duration_seconds_count{owner_id=~\"$owner_id\", group_id=~\"$group_id\",service_id=~\"$service_id\"}[10m]))\n  )\n  \n) * (\n# rate \n  sum(\n    irate(dundergitcall_usercode_duration_seconds_count{owner_id=~\"$owner_id\", group_id=~\"$group_id\",service_id=~\"$service_id\"}[10m])\n ) by (owner_id,group_id,service_id)\n)\n\n+\n\n(\n# wait time\n  sum by (owner_id,group_id,service_id) (rate(dundergitcall_usercode_wait_duration_seconds_sum{owner_id=~\"$owner_id\", group_id=~\"$group_id\", service_id=~\"$service_id\"}[5m]))\n  /\n  sum by (owner_id,group_id,service_id) (rate(dundergitcall_usercode_wait_duration_seconds_count{owner_id=~\"$owner_id\", group_id=~\"$group_id\", service_id=~\"$service_id\"}[5m]))\n)\n\n",
+          "legendFormat": "+wait-{{owner_id}}-{{group_id}}-{{service_id}}",
+          "refId": "B"
+        },
+        {
+          "expr": "# (active connections) - (avg duration * msg rate) = 0\n\n# duration\n( \n\n  (\n    sum  by (owner_id,group_id,service_id) (rate(dundergitcall_usercode_duration_seconds_sum{owner_id=~\"$owner_id\", group_id=~\"$group_id\",service_id=~\"$service_id\"}[10m]))\n    /\n    sum  by (owner_id,group_id,service_id) (rate(dundergitcall_usercode_duration_seconds_count{owner_id=~\"$owner_id\", group_id=~\"$group_id\",service_id=~\"$service_id\"}[10m]))\n  )\n  \n) * (\n# rate \n  sum(\n    irate(dundergitcall_usercode_duration_seconds_count{owner_id=~\"$owner_id\", group_id=~\"$group_id\",service_id=~\"$service_id\"}[10m])\n ) by (owner_id,group_id,service_id)\n)\n\n+\n2*\nlog10(1+\n(\n# wait time\n  sum by (owner_id,group_id,service_id) (rate(dundergitcall_usercode_wait_duration_seconds_sum{owner_id=~\"$owner_id\", group_id=~\"$group_id\", service_id=~\"$service_id\"}[5m]))\n  /\n  sum by (owner_id,group_id,service_id) (rate(dundergitcall_usercode_wait_duration_seconds_count{owner_id=~\"$owner_id\", group_id=~\"$group_id\", service_id=~\"$service_id\"}[5m]))\n)\n)\n\n",
+          "legendFormat": "+2log(1+wait)-{{owner_id}}-{{group_id}}-{{service_id}}",
+          "refId": "D"
         }
       ],
       "thresholds": [],
@@ -722,7 +803,7 @@
         "h": 9,
         "w": 24,
         "x": 0,
-        "y": 46
+        "y": 54
       },
       "hiddenSeries": false,
       "id": 22,
@@ -808,7 +889,7 @@
         "h": 1,
         "w": 24,
         "x": 0,
-        "y": 55
+        "y": 63
       },
       "id": 21,
       "panels": [],
@@ -827,7 +908,7 @@
         "h": 8,
         "w": 24,
         "x": 0,
-        "y": 56
+        "y": 64
       },
       "hiddenSeries": false,
       "id": 12,
@@ -909,6 +990,94 @@
     },
     {
       "aliasColors": {},
+      "bars": false,
+      "dashLength": 10,
+      "dashes": false,
+      "datasource": null,
+      "fill": 10,
+      "fillGradient": 6,
+      "gridPos": {
+        "h": 9,
+        "w": 24,
+        "x": 0,
+        "y": 72
+      },
+      "hiddenSeries": false,
+      "id": 11,
+      "interval": "",
+      "legend": {
+        "avg": false,
+        "current": false,
+        "max": false,
+        "min": false,
+        "show": true,
+        "total": false,
+        "values": false
+      },
+      "lines": true,
+      "linewidth": 1,
+      "nullPointMode": "null",
+      "options": {
+        "dataLinks": []
+      },
+      "percentage": false,
+      "pointradius": 2,
+      "points": false,
+      "renderer": "flot",
+      "seriesOverrides": [],
+      "spaceLength": 10,
+      "stack": false,
+      "steppedLine": false,
+      "targets": [
+        {
+          "expr": "sum(\n   irate(dundergitcall_usercode_retry_count{owner_id=~\"$owner_id\", group_id=~\"$group_id\",service_id=~\"$service_id\"}[5m])\n) by (owner_id,group_id,service_id)",
+          "legendFormat": "{{owner_id}}-{{group_id}}-{{service_id}}",
+          "refId": "A"
+        }
+      ],
+      "thresholds": [],
+      "timeFrom": null,
+      "timeRegions": [],
+      "timeShift": null,
+      "title": "Retries , Rate",
+      "tooltip": {
+        "shared": true,
+        "sort": 0,
+        "value_type": "individual"
+      },
+      "type": "graph",
+      "xaxis": {
+        "buckets": null,
+        "mode": "time",
+        "name": null,
+        "show": true,
+        "values": []
+      },
+      "yaxes": [
+        {
+          "format": "short",
+          "label": null,
+          "logBase": 2,
+          "max": null,
+          "min": "0",
+          "show": true
+        },
+        {
+          "format": "short",
+          "label": null,
+          "logBase": 1,
+          "max": null,
+          "min": null,
+          "show": true
+        }
+      ],
+      "yaxis": {
+        "align": false,
+        "alignLevel": null
+      }
+    },
+    {
+      "aliasColors": {},
       "bars": true,
       "dashLength": 10,
       "dashes": false,
@@ -919,7 +1088,7 @@
         "h": 8,
         "w": 24,
         "x": 0,
-        "y": 64
+        "y": 81
       },
       "hiddenSeries": false,
       "id": 13,
@@ -976,94 +1145,6 @@
           "format": "short",
           "label": null,
           "logBase": 1,
-          "max": null,
-          "min": "0",
-          "show": true
-        },
-        {
-          "format": "short",
-          "label": null,
-          "logBase": 1,
-          "max": null,
-          "min": null,
-          "show": true
-        }
-      ],
-      "yaxis": {
-        "align": false,
-        "alignLevel": null
-      }
-    },
-    {
-      "aliasColors": {},
-      "bars": false,
-      "dashLength": 10,
-      "dashes": false,
-      "datasource": null,
-      "fill": 10,
-      "fillGradient": 6,
-      "gridPos": {
-        "h": 9,
-        "w": 24,
-        "x": 0,
-        "y": 72
-      },
-      "hiddenSeries": false,
-      "id": 11,
-      "interval": "",
-      "legend": {
-        "avg": false,
-        "current": false,
-        "max": false,
-        "min": false,
-        "show": true,
-        "total": false,
-        "values": false
-      },
-      "lines": true,
-      "linewidth": 1,
-      "nullPointMode": "null",
-      "options": {
-        "dataLinks": []
-      },
-      "percentage": false,
-      "pointradius": 2,
-      "points": false,
-      "renderer": "flot",
-      "seriesOverrides": [],
-      "spaceLength": 10,
-      "stack": false,
-      "steppedLine": false,
-      "targets": [
-        {
-          "expr": "sum(\n   irate(dundergitcall_usercode_retry_count{owner_id=~\"$owner_id\", group_id=~\"$group_id\",service_id=~\"$service_id\",result=\"done\"}[5m])\n) by (owner_id,group_id,service_id)",
-          "legendFormat": "{{owner_id}}-{{group_id}}-{{service_id}}",
-          "refId": "A"
-        }
-      ],
-      "thresholds": [],
-      "timeFrom": null,
-      "timeRegions": [],
-      "timeShift": null,
-      "title": "Retries , Rate",
-      "tooltip": {
-        "shared": true,
-        "sort": 0,
-        "value_type": "individual"
-      },
-      "type": "graph",
-      "xaxis": {
-        "buckets": null,
-        "mode": "time",
-        "name": null,
-        "show": true,
-        "values": []
-      },
-      "yaxes": [
-        {
-          "format": "short",
-          "label": null,
-          "logBase": 2,
           "max": null,
           "min": "0",
           "show": true
@@ -1140,26 +1221,6 @@
             "selected": false,
             "text": "780",
             "value": "780"
-          },
-          {
-            "selected": false,
-            "text": "784",
-            "value": "784"
-          },
-          {
-            "selected": false,
-            "text": "785",
-            "value": "785"
-          },
-          {
-            "selected": false,
-            "text": "786",
-            "value": "786"
-          },
-          {
-            "selected": false,
-            "text": "783",
-            "value": "783"
           }
         ],
         "query": "label_values(dundergitcall_usercode_duration_seconds_count{owner_id=~\"$owner_id\"}, group_id)",
@@ -1198,26 +1259,6 @@
             "selected": false,
             "text": "5f1fef9867fe570008000001",
             "value": "5f1fef9867fe570008000001"
-          },
-          {
-            "selected": false,
-            "text": "5f2165e8d64e8a0007000164",
-            "value": "5f2165e8d64e8a0007000164"
-          },
-          {
-            "selected": false,
-            "text": "5f216612d64e8a0007000168",
-            "value": "5f216612d64e8a0007000168"
-          },
-          {
-            "selected": false,
-            "text": "5f2166931bc6a20007000154",
-            "value": "5f2166931bc6a20007000154"
-          },
-          {
-            "selected": false,
-            "text": "5f216584b34063000700014d",
-            "value": "5f216584b34063000700014d"
           }
         ],
         "query": "label_values(dundergitcall_usercode_duration_seconds_count{owner_id=~\"$owner_id\", group_id=~\"$group_id\"}, service_id)",
@@ -1254,5 +1295,5 @@
   "timezone": "",
   "title": "Dundergitcall",
   "uid": "ZW_9CRCZz",
-  "version": 68
+  "version": 81
 }
