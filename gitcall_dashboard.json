@@ -15,28 +15,47 @@
   "editable": true,
   "gnetId": null,
   "graphTooltip": 0,
-  "id": 40,
   "links": [],
   "panels": [
+    {
+      "collapsed": false,
+      "datasource": null,
+      "gridPos": {
+        "h": 1,
+        "w": 24,
+        "x": 0,
+        "y": 0
+      },
+      "id": 6,
+      "panels": [],
+      "title": "Status Update",
+      "type": "row"
+    },
     {
       "cards": {
         "cardPadding": null,
         "cardRound": null
       },
       "color": {
-        "cardColor": "#b4ff00",
+        "cardColor": "#37872D",
         "colorScale": "sqrt",
         "colorScheme": "interpolateGreens",
-        "exponent": 0.5,
-        "mode": "spectrum"
+        "exponent": 0.25,
+        "mode": "opacity"
       },
       "dataFormat": "tsbuckets",
       "datasource": null,
+      "fieldConfig": {
+        "defaults": {
+          "custom": {}
+        },
+        "overrides": []
+      },
       "gridPos": {
         "h": 7,
         "w": 24,
         "x": 0,
-        "y": 0
+        "y": 1
       },
       "heatmap": {},
       "hideZeroBuckets": true,
@@ -45,7 +64,6 @@
       "legend": {
         "show": true
       },
-      "options": {},
       "reverseYBuckets": false,
       "targets": [
         {
@@ -82,25 +100,17 @@
       "yBucketSize": null
     },
     {
-      "collapsed": false,
-      "datasource": null,
-      "gridPos": {
-        "h": 1,
-        "w": 24,
-        "x": 0,
-        "y": 7
-      },
-      "id": 6,
-      "panels": [],
-      "title": "Status Update",
-      "type": "row"
-    },
-    {
       "aliasColors": {},
       "bars": false,
       "dashLength": 10,
       "dashes": false,
       "datasource": null,
+      "fieldConfig": {
+        "defaults": {
+          "custom": {}
+        },
+        "overrides": []
+      },
       "fill": 1,
       "fillGradient": 0,
       "gridPos": {
@@ -182,121 +192,30 @@
       }
     },
     {
-      "aliasColors": {},
-      "bars": false,
-      "dashLength": 10,
-      "dashes": false,
-      "datasource": null,
-      "fill": 1,
-      "fillGradient": 0,
-      "gridPos": {
-        "h": 8,
-        "w": 24,
-        "x": 0,
-        "y": 17
-      },
-      "hiddenSeries": false,
-      "id": 13,
-      "legend": {
-        "avg": false,
-        "current": false,
-        "max": false,
-        "min": false,
-        "show": true,
-        "total": false,
-        "values": false
-      },
-      "lines": true,
-      "linewidth": 1,
-      "nullPointMode": "null",
-      "options": {
-        "dataLinks": []
-      },
-      "percentage": false,
-      "pointradius": 2,
-      "points": false,
-      "renderer": "flot",
-      "seriesOverrides": [],
-      "spaceLength": 10,
-      "stack": false,
-      "steppedLine": false,
-      "targets": [
-        {
-          "expr": "  sum by (instance) (irate(consumer_consume_duration_seconds_sum{tier=\"gitcall\",consumer=\"dundergitcall_status_update\"}[5m]))\n/\n  sum by (instance) (irate(consumer_consume_duration_seconds_count{tier=\"gitcall\",consumer=\"dundergitcall_status_update\"}[5m]))",
-          "format": "time_series",
-          "instant": false,
-          "intervalFactor": 1,
-          "legendFormat": "",
-          "refId": "A"
-        },
-        {
-          "expr": "sum by (instance) (consumer_consume_expire_seconds{tier=\"gitcall\",consumer=\"dundergitcall_status_update\"})",
-          "instant": false,
-          "intervalFactor": 1,
-          "legendFormat": "",
-          "refId": "B"
-        }
-      ],
-      "thresholds": [],
-      "timeFrom": null,
-      "timeRegions": [],
-      "timeShift": null,
-      "title": "Status Update, Avg LOG2 Time",
-      "tooltip": {
-        "shared": true,
-        "sort": 0,
-        "value_type": "individual"
-      },
-      "type": "graph",
-      "xaxis": {
-        "buckets": null,
-        "mode": "time",
-        "name": null,
-        "show": true,
-        "values": []
-      },
-      "yaxes": [
-        {
-          "format": "short",
-          "label": "Sec",
-          "logBase": 2,
-          "max": null,
-          "min": null,
-          "show": true
-        },
-        {
-          "format": "short",
-          "label": null,
-          "logBase": 1,
-          "max": null,
-          "min": null,
-          "show": true
-        }
-      ],
-      "yaxis": {
-        "align": false,
-        "alignLevel": null
-      }
-    },
-    {
       "cards": {
         "cardPadding": null,
         "cardRound": null
       },
       "color": {
-        "cardColor": "#b4ff00",
+        "cardColor": "#37872D",
         "colorScale": "sqrt",
         "colorScheme": "interpolateGreens",
-        "exponent": 0.5,
-        "mode": "spectrum"
+        "exponent": 0.25,
+        "mode": "opacity"
       },
       "dataFormat": "tsbuckets",
       "datasource": null,
+      "fieldConfig": {
+        "defaults": {
+          "custom": {}
+        },
+        "overrides": []
+      },
       "gridPos": {
         "h": 7,
         "w": 24,
         "x": 0,
-        "y": 25
+        "y": 17
       },
       "heatmap": {},
       "hideZeroBuckets": true,
@@ -305,7 +224,6 @@
       "legend": {
         "show": true
       },
-      "options": {},
       "reverseYBuckets": false,
       "targets": [
         {
@@ -347,13 +265,19 @@
       "dashLength": 10,
       "dashes": false,
       "datasource": null,
+      "fieldConfig": {
+        "defaults": {
+          "custom": {}
+        },
+        "overrides": []
+      },
       "fill": 1,
       "fillGradient": 0,
       "gridPos": {
         "h": 8,
         "w": 24,
         "x": 0,
-        "y": 32
+        "y": 24
       },
       "hiddenSeries": false,
       "id": 23,
@@ -432,110 +356,13 @@
       }
     },
     {
-      "aliasColors": {},
-      "bars": false,
-      "dashLength": 10,
-      "dashes": false,
-      "datasource": null,
-      "fill": 1,
-      "fillGradient": 0,
-      "gridPos": {
-        "h": 8,
-        "w": 24,
-        "x": 0,
-        "y": 40
-      },
-      "hiddenSeries": false,
-      "id": 10,
-      "legend": {
-        "avg": false,
-        "current": false,
-        "max": false,
-        "min": false,
-        "show": true,
-        "total": false,
-        "values": false
-      },
-      "lines": true,
-      "linewidth": 1,
-      "nullPointMode": "null",
-      "options": {
-        "dataLinks": []
-      },
-      "percentage": false,
-      "pointradius": 2,
-      "points": false,
-      "renderer": "flot",
-      "seriesOverrides": [],
-      "spaceLength": 10,
-      "stack": false,
-      "steppedLine": false,
-      "targets": [
-        {
-          "expr": "  sum by (instance) (rate(consumer_consume_duration_seconds_sum{tier=\"gitcall\",consumer=\"run_dundergitcall_service\"}[30m]))\n/\n  sum by (instance) (rate(consumer_consume_duration_seconds_count{tier=\"gitcall\",consumer=\"run_dundergitcall_service\"}[30m]))",
-          "format": "time_series",
-          "instant": false,
-          "intervalFactor": 1,
-          "legendFormat": "",
-          "refId": "A"
-        },
-        {
-          "expr": "sum by (instance) (consumer_consume_expire_seconds{tier=\"gitcall\",consumer=\"run_dundergitcall_service\"})",
-          "instant": false,
-          "intervalFactor": 1,
-          "legendFormat": "",
-          "refId": "B"
-        }
-      ],
-      "thresholds": [],
-      "timeFrom": null,
-      "timeRegions": [],
-      "timeShift": null,
-      "title": "Run Service, Avg LOG2 Time",
-      "tooltip": {
-        "shared": true,
-        "sort": 0,
-        "value_type": "individual"
-      },
-      "type": "graph",
-      "xaxis": {
-        "buckets": null,
-        "mode": "time",
-        "name": null,
-        "show": true,
-        "values": []
-      },
-      "yaxes": [
-        {
-          "format": "short",
-          "label": "Sec",
-          "logBase": 2,
-          "max": null,
-          "min": null,
-          "show": true
-        },
-        {
-          "format": "short",
-          "label": null,
-          "logBase": 1,
-          "max": null,
-          "min": null,
-          "show": true
-        }
-      ],
-      "yaxis": {
-        "align": false,
-        "alignLevel": null
-      }
-    },
-    {
       "collapsed": true,
       "datasource": null,
       "gridPos": {
         "h": 1,
         "w": 24,
         "x": 0,
-        "y": 48
+        "y": 32
       },
       "id": 29,
       "panels": [
@@ -545,13 +372,19 @@
           "dashLength": 10,
           "dashes": false,
           "datasource": null,
+          "fieldConfig": {
+            "defaults": {
+              "custom": {}
+            },
+            "overrides": []
+          },
           "fill": 1,
           "fillGradient": 0,
           "gridPos": {
             "h": 8,
             "w": 24,
             "x": 0,
-            "y": 19
+            "y": 33
           },
           "hiddenSeries": false,
           "id": 31,
@@ -631,13 +464,19 @@
           "dashLength": 10,
           "dashes": false,
           "datasource": null,
+          "fieldConfig": {
+            "defaults": {
+              "custom": {}
+            },
+            "overrides": []
+          },
           "fill": 1,
           "fillGradient": 0,
           "gridPos": {
             "h": 8,
             "w": 24,
             "x": 0,
-            "y": 27
+            "y": 41
           },
           "hiddenSeries": false,
           "id": 8,
@@ -733,7 +572,7 @@
         "h": 1,
         "w": 24,
         "x": 0,
-        "y": 49
+        "y": 33
       },
       "id": 15,
       "panels": [
@@ -932,7 +771,7 @@
         "h": 1,
         "w": 24,
         "x": 0,
-        "y": 50
+        "y": 34
       },
       "id": 21,
       "panels": [],
@@ -946,7 +785,7 @@
         "h": 1,
         "w": 24,
         "x": 0,
-        "y": 51
+        "y": 35
       },
       "id": 41,
       "panels": [],
@@ -959,19 +798,25 @@
         "cardRound": null
       },
       "color": {
-        "cardColor": "#b4ff00",
+        "cardColor": "#37872D",
         "colorScale": "sqrt",
         "colorScheme": "interpolateGreens",
-        "exponent": 0.5,
-        "mode": "spectrum"
+        "exponent": 0.25,
+        "mode": "opacity"
       },
       "dataFormat": "tsbuckets",
       "datasource": null,
+      "fieldConfig": {
+        "defaults": {
+          "custom": {}
+        },
+        "overrides": []
+      },
       "gridPos": {
         "h": 7,
         "w": 24,
         "x": 0,
-        "y": 52
+        "y": 36
       },
       "heatmap": {},
       "hideZeroBuckets": true,
@@ -980,7 +825,6 @@
       "legend": {
         "show": true
       },
-      "options": {},
       "reverseYBuckets": false,
       "targets": [
         {
@@ -1022,13 +866,19 @@
       "dashLength": 10,
       "dashes": false,
       "datasource": null,
+      "fieldConfig": {
+        "defaults": {
+          "custom": {}
+        },
+        "overrides": []
+      },
       "fill": 1,
       "fillGradient": 0,
       "gridPos": {
         "h": 8,
         "w": 24,
         "x": 0,
-        "y": 59
+        "y": 43
       },
       "hiddenSeries": false,
       "id": 43,
@@ -1107,110 +957,13 @@
       }
     },
     {
-      "aliasColors": {},
-      "bars": false,
-      "dashLength": 10,
-      "dashes": false,
-      "datasource": null,
-      "fill": 1,
-      "fillGradient": 0,
-      "gridPos": {
-        "h": 8,
-        "w": 24,
-        "x": 0,
-        "y": 67
-      },
-      "hiddenSeries": false,
-      "id": 2,
-      "legend": {
-        "avg": false,
-        "current": false,
-        "max": false,
-        "min": false,
-        "show": true,
-        "total": false,
-        "values": false
-      },
-      "lines": true,
-      "linewidth": 1,
-      "nullPointMode": "null",
-      "options": {
-        "dataLinks": []
-      },
-      "percentage": false,
-      "pointradius": 2,
-      "points": false,
-      "renderer": "flot",
-      "seriesOverrides": [],
-      "spaceLength": 10,
-      "stack": false,
-      "steppedLine": false,
-      "targets": [
-        {
-          "expr": "  sum by (instance) (rate(consumer_consume_duration_seconds_sum{tier=\"gitcall\",consumer=\"get_dundergitcall_service\"}[5m]))\n/\n  sum by (instance) (rate(consumer_consume_duration_seconds_count{tier=\"gitcall\",consumer=\"get_dundergitcall_service\"}[5m]))",
-          "format": "time_series",
-          "instant": false,
-          "intervalFactor": 1,
-          "legendFormat": "",
-          "refId": "A"
-        },
-        {
-          "expr": "sum by (instance) (consumer_consume_expire_seconds{tier=\"gitcall\",consumer=\"get_dundergitcall_service\"})",
-          "instant": false,
-          "intervalFactor": 1,
-          "legendFormat": "",
-          "refId": "B"
-        }
-      ],
-      "thresholds": [],
-      "timeFrom": null,
-      "timeRegions": [],
-      "timeShift": null,
-      "title": "Get Service, Avg LOG2 Time",
-      "tooltip": {
-        "shared": true,
-        "sort": 0,
-        "value_type": "individual"
-      },
-      "type": "graph",
-      "xaxis": {
-        "buckets": null,
-        "mode": "time",
-        "name": null,
-        "show": true,
-        "values": []
-      },
-      "yaxes": [
-        {
-          "format": "short",
-          "label": "Sec",
-          "logBase": 2,
-          "max": null,
-          "min": null,
-          "show": true
-        },
-        {
-          "format": "short",
-          "label": null,
-          "logBase": 1,
-          "max": null,
-          "min": null,
-          "show": true
-        }
-      ],
-      "yaxis": {
-        "align": false,
-        "alignLevel": null
-      }
-    },
-    {
       "collapsed": false,
       "datasource": null,
       "gridPos": {
         "h": 1,
         "w": 24,
         "x": 0,
-        "y": 75
+        "y": 51
       },
       "id": 37,
       "panels": [],
@@ -1223,13 +976,19 @@
       "dashLength": 10,
       "dashes": false,
       "datasource": null,
+      "fieldConfig": {
+        "defaults": {
+          "custom": {}
+        },
+        "overrides": []
+      },
       "fill": 1,
       "fillGradient": 0,
       "gridPos": {
         "h": 8,
         "w": 24,
         "x": 0,
-        "y": 76
+        "y": 52
       },
       "hiddenSeries": false,
       "id": 39,
@@ -1309,13 +1068,19 @@
       "dashLength": 10,
       "dashes": false,
       "datasource": null,
+      "fieldConfig": {
+        "defaults": {
+          "custom": {}
+        },
+        "overrides": []
+      },
       "fill": 1,
       "fillGradient": 0,
       "gridPos": {
         "h": 8,
         "w": 24,
         "x": 0,
-        "y": 84
+        "y": 60
       },
       "hiddenSeries": false,
       "id": 7,
@@ -1407,7 +1172,7 @@
         "h": 1,
         "w": 24,
         "x": 0,
-        "y": 92
+        "y": 68
       },
       "id": 33,
       "panels": [],
@@ -1420,13 +1185,19 @@
       "dashLength": 10,
       "dashes": false,
       "datasource": null,
+      "fieldConfig": {
+        "defaults": {
+          "custom": {}
+        },
+        "overrides": []
+      },
       "fill": 1,
       "fillGradient": 0,
       "gridPos": {
         "h": 7,
         "w": 24,
         "x": 0,
-        "y": 93
+        "y": 69
       },
       "hiddenSeries": false,
       "id": 35,
@@ -1506,13 +1277,19 @@
       "dashLength": 10,
       "dashes": false,
       "datasource": null,
+      "fieldConfig": {
+        "defaults": {
+          "custom": {}
+        },
+        "overrides": []
+      },
       "fill": 1,
       "fillGradient": 0,
       "gridPos": {
         "h": 8,
         "w": 24,
         "x": 0,
-        "y": 100
+        "y": 76
       },
       "hiddenSeries": false,
       "id": 9,
@@ -1604,7 +1381,7 @@
         "h": 1,
         "w": 24,
         "x": 0,
-        "y": 108
+        "y": 84
       },
       "id": 25,
       "panels": [],
@@ -1617,13 +1394,19 @@
       "dashLength": 10,
       "dashes": false,
       "datasource": null,
+      "fieldConfig": {
+        "defaults": {
+          "custom": {}
+        },
+        "overrides": []
+      },
       "fill": 1,
       "fillGradient": 0,
       "gridPos": {
         "h": 8,
         "w": 24,
         "x": 0,
-        "y": 109
+        "y": 85
       },
       "hiddenSeries": false,
       "id": 11,
@@ -1714,13 +1497,19 @@
       "dashLength": 10,
       "dashes": false,
       "datasource": null,
+      "fieldConfig": {
+        "defaults": {
+          "custom": {}
+        },
+        "overrides": []
+      },
       "fill": 1,
       "fillGradient": 0,
       "gridPos": {
         "h": 8,
         "w": 24,
         "x": 0,
-        "y": 117
+        "y": 93
       },
       "hiddenSeries": false,
       "id": 27,
@@ -1801,7 +1590,7 @@
         "h": 1,
         "w": 24,
         "x": 0,
-        "y": 125
+        "y": 101
       },
       "id": 47,
       "panels": [],
@@ -1814,13 +1603,19 @@
       "dashLength": 10,
       "dashes": false,
       "datasource": null,
+      "fieldConfig": {
+        "defaults": {
+          "custom": {}
+        },
+        "overrides": []
+      },
       "fill": 1,
       "fillGradient": 0,
       "gridPos": {
         "h": 8,
         "w": 24,
         "x": 0,
-        "y": 126
+        "y": 102
       },
       "hiddenSeries": false,
       "id": 45,
@@ -1900,13 +1695,19 @@
       "dashLength": 10,
       "dashes": false,
       "datasource": null,
+      "fieldConfig": {
+        "defaults": {
+          "custom": {}
+        },
+        "overrides": []
+      },
       "fill": 1,
       "fillGradient": 0,
       "gridPos": {
         "h": 8,
         "w": 24,
         "x": 0,
-        "y": 134
+        "y": 110
       },
       "hiddenSeries": false,
       "id": 51,
@@ -1986,13 +1787,19 @@
       "dashLength": 10,
       "dashes": false,
       "datasource": null,
+      "fieldConfig": {
+        "defaults": {
+          "custom": {}
+        },
+        "overrides": []
+      },
       "fill": 1,
       "fillGradient": 0,
       "gridPos": {
         "h": 8,
         "w": 24,
         "x": 0,
-        "y": 142
+        "y": 118
       },
       "hiddenSeries": false,
       "id": 49,
@@ -2068,7 +1875,7 @@
     }
   ],
   "refresh": false,
-  "schemaVersion": 22,
+  "schemaVersion": 25,
   "style": "dark",
   "tags": [],
   "templating": {
@@ -2095,5 +1902,5 @@
   "timezone": "",
   "title": "GitCall",
   "uid": "d88g6RjZz",
-  "version": 31
+  "version": 33
 }
