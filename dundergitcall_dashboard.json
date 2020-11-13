@@ -15,9 +15,148 @@
   "editable": true,
   "gnetId": null,
   "graphTooltip": 0,
-  "iteration": 1605169231416,
+  "iteration": 1605169231446,
   "links": [],
   "panels": [
+    {
+      "datasource": null,
+      "gridPos": {
+        "h": 1,
+        "w": 24,
+        "x": 0,
+        "y": 0
+      },
+      "id": 37,
+      "title": "dundergitcall",
+      "type": "row"
+    },
+    {
+      "datasource": null,
+      "fieldConfig": {
+        "defaults": {
+          "custom": {
+            "align": null
+          },
+          "mappings": [],
+          "max": 100,
+          "min": 0,
+          "noValue": "0",
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "dark-orange",
+                "value": 60
+              },
+              {
+                "color": "dark-red",
+                "value": 80
+              }
+            ]
+          },
+          "unit": "percent"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 4,
+        "w": 5,
+        "x": 0,
+        "y": 1
+      },
+      "id": 33,
+      "options": {
+        "colorMode": "value",
+        "graphMode": "area",
+        "justifyMode": "auto",
+        "orientation": "auto",
+        "reduceOptions": {
+          "calcs": [
+            "last"
+          ],
+          "values": false
+        }
+      },
+      "pluginVersion": "7.0.1",
+      "targets": [
+        {
+          "expr": "sum(\n\nmax(kube_pod_labels{label_tier=\"dundergitcall\",label_owner_id=~\"$owner_id\",label_group_id=~\"$group_id\",label_service_id=~\"$service_id\"})\nby (label_tier, pod)*on(pod)group_right(label_tier)\nlabel_replace\n(sum by(pod,container)\n(\nrate(container_cpu_usage_seconds_total{container=~\".*\",container!=\"POD\",container!=\"\",image!=\"\"}[2m])\n), \"pod\", \"$1\", \"pod_name\", \"(.+)\")\n\n) \n\n/\n\nsum(\n\nmax(kube_pod_labels{label_tier=\"dundergitcall\",label_owner_id=~\"$owner_id\",label_group_id=~\"$group_id\",label_service_id=~\"$service_id\"})\nby (label_tier, pod)*on(pod)group_right(label_tier)\nlabel_replace\n(\n\n(kube_pod_container_resource_limits_cpu_cores{}\n\n), \"pod\", \"$1\", \"pod\", \"(.+)\")\n\n)\n\n* 100",
+          "interval": "",
+          "legendFormat": "",
+          "refId": "B"
+        }
+      ],
+      "timeFrom": null,
+      "timeShift": null,
+      "title": "CPU used / limit % ",
+      "type": "stat"
+    },
+    {
+      "datasource": null,
+      "fieldConfig": {
+        "defaults": {
+          "custom": {},
+          "mappings": [],
+          "min": 0,
+          "noValue": "0",
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "dark-orange",
+                "value": 60
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          },
+          "unit": "percent"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 4,
+        "w": 5,
+        "x": 5,
+        "y": 1
+      },
+      "id": 44,
+      "options": {
+        "colorMode": "value",
+        "graphMode": "area",
+        "justifyMode": "auto",
+        "orientation": "auto",
+        "reduceOptions": {
+          "calcs": [
+            "last"
+          ],
+          "values": false
+        }
+      },
+      "pluginVersion": "7.0.1",
+      "targets": [
+        {
+          "expr": "sum(\nmax (kube_pod_labels{label_tier=~\"dundergitcall\",label_owner_id=~\"$owner_id\",label_group_id=~\"$group_id\",service_id=~\"$service_id\"}) by (label_tier, pod)\n    * \n    on(pod)\n    \n    group_right(label_tier)\n    \n    label_replace\n    \n    (avg by(pod,container)\n    \n      ( container_memory_working_set_bytes{container!=\"POD\",container!=\"\",image!=\"\"}\n    \n    ), \"pod\", \"$1\", \"pod_name\", \"(.+)\"\n  )\n)\n\n/ \n\nsum(\nmax (kube_pod_labels{label_tier=~\"dundergitcall\",label_owner_id=~\"$owner_id\",label_group_id=~\"$group_id\",service_id=~\"$service_id\"})\nby (label_tier, pod)*on(pod)group_right(label_tier)\nlabel_replace\n(\n\n(kube_pod_container_resource_limits_memory_bytes{}\n), \"pod\", \"$1\", \"pod\", \"(.+)\")\n)\n\n* 100\n",
+          "interval": "",
+          "legendFormat": "",
+          "refId": "A"
+        }
+      ],
+      "timeFrom": null,
+      "timeShift": null,
+      "title": "Memory used \\ limit %",
+      "type": "stat"
+    },
     {
       "datasource": null,
       "description": "",
@@ -41,9 +180,9 @@
       },
       "gridPos": {
         "h": 4,
-        "w": 6,
-        "x": 0,
-        "y": 0
+        "w": 5,
+        "x": 10,
+        "y": 1
       },
       "id": 28,
       "options": {
@@ -61,7 +200,7 @@
       "pluginVersion": "7.0.1",
       "targets": [
         {
-          "expr": "sum(kube_pod_status_phase{phase=\"Running\"} * on(pod) group_left() max(kube_pod_labels{label_tier=~\"dundergitcall.*\",label_owner_id=~\"$owner_id\",label_group_id=~\"$group_id\",label_service_id=~\"$service_id\"}) by (label_tier, label_owner_id, label_group_id, label_service_id, pod))",
+          "expr": "sum(kube_pod_status_phase{phase=\"Running\"} * on(pod) group_left() max(kube_pod_labels{label_tier=\"dundergitcall\",label_owner_id=~\"$owner_id\",label_group_id=~\"$group_id\",label_service_id=~\"$service_id\"}) by (label_tier, label_owner_id, label_group_id, label_service_id, pod))",
           "interval": "",
           "legendFormat": "",
           "refId": "A"
@@ -103,9 +242,9 @@
       },
       "gridPos": {
         "h": 4,
-        "w": 6,
-        "x": 6,
-        "y": 0
+        "w": 3,
+        "x": 15,
+        "y": 1
       },
       "id": 29,
       "options": {
@@ -123,7 +262,7 @@
       "pluginVersion": "7.0.1",
       "targets": [
         {
-          "expr": "sum(kube_pod_status_phase{phase=\"Pending\"} * on(pod) group_left() max(kube_pod_labels{label_tier=~\"dundergitcall.*\",label_owner_id=~\"$owner_id\",label_group_id=~\"$group_id\",label_service_id=~\"$service_id\"}) by (label_tier, label_owner_id, label_group_id, label_service_id, pod))",
+          "expr": "sum(kube_pod_status_phase{phase=\"Pending\"} * on(pod) group_left() max(kube_pod_labels{label_tier=\"dundergitcall\",label_owner_id=~\"$owner_id\",label_group_id=~\"$group_id\",label_service_id=~\"$service_id\"}) by (label_tier, label_owner_id, label_group_id, label_service_id, pod))",
           "interval": "",
           "legendFormat": "",
           "refId": "A"
@@ -161,9 +300,9 @@
       },
       "gridPos": {
         "h": 4,
-        "w": 6,
-        "x": 12,
-        "y": 0
+        "w": 3,
+        "x": 18,
+        "y": 1
       },
       "id": 30,
       "options": {
@@ -181,7 +320,7 @@
       "pluginVersion": "7.0.1",
       "targets": [
         {
-          "expr": "sum(kube_pod_status_phase{phase=\"Failed\"} * on(pod) group_left() max(kube_pod_labels{label_tier=~\"dundergitcall.*\",label_owner_id=~\"$owner_id\",label_group_id=~\"$group_id\",label_service_id=~\"$service_id\"}) by (label_tier, label_owner_id, label_group_id, label_service_id, pod))",
+          "expr": "sum(kube_pod_status_phase{phase=\"Failed\"} * on(pod) group_left() max(kube_pod_labels{label_tier=\"dundergitcall\",label_owner_id=~\"$owner_id\",label_group_id=~\"$group_id\",label_service_id=~\"$service_id\"}) by (label_tier, label_owner_id, label_group_id, label_service_id, pod))",
           "interval": "",
           "legendFormat": "",
           "refId": "A"
@@ -219,9 +358,9 @@
       },
       "gridPos": {
         "h": 4,
-        "w": 6,
-        "x": 18,
-        "y": 0
+        "w": 3,
+        "x": 21,
+        "y": 1
       },
       "id": 31,
       "options": {
@@ -239,7 +378,380 @@
       "pluginVersion": "7.0.1",
       "targets": [
         {
-          "expr": "sum(kube_pod_status_phase{phase=\"Unknown\"} * on(pod) group_left() max(kube_pod_labels{label_tier=~\"dundergitcall.*\",label_owner_id=~\"$owner_id\",label_group_id=~\"$group_id\",label_service_id=~\"$service_id\"}) by (label_tier, label_owner_id, label_group_id, label_service_id, pod))",
+          "expr": "sum(kube_pod_status_phase{phase=\"Unknown\"} * on(pod) group_left() max(kube_pod_labels{label_tier=\"dundergitcall\",label_owner_id=~\"$owner_id\",label_group_id=~\"$group_id\",label_service_id=~\"$service_id\"}) by (label_tier, label_owner_id, label_group_id, label_service_id, pod))",
+          "interval": "",
+          "legendFormat": "",
+          "refId": "A"
+        }
+      ],
+      "timeFrom": null,
+      "timeShift": null,
+      "title": "Unknown Pods",
+      "type": "stat"
+    },
+    {
+      "collapsed": false,
+      "datasource": null,
+      "gridPos": {
+        "h": 1,
+        "w": 24,
+        "x": 0,
+        "y": 5
+      },
+      "id": 35,
+      "panels": [],
+      "title": "usercode",
+      "type": "row"
+    },
+    {
+      "datasource": null,
+      "fieldConfig": {
+        "defaults": {
+          "custom": {
+            "align": null
+          },
+          "mappings": [],
+          "max": 100,
+          "min": 0,
+          "noValue": "0",
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "dark-orange",
+                "value": 60
+              },
+              {
+                "color": "dark-red",
+                "value": 80
+              }
+            ]
+          },
+          "unit": "percent"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 4,
+        "w": 5,
+        "x": 0,
+        "y": 6
+      },
+      "id": 38,
+      "options": {
+        "colorMode": "value",
+        "graphMode": "area",
+        "justifyMode": "auto",
+        "orientation": "auto",
+        "reduceOptions": {
+          "calcs": [
+            "last"
+          ],
+          "values": false
+        }
+      },
+      "pluginVersion": "7.0.1",
+      "targets": [
+        {
+          "expr": "sum(\n\nmax(kube_pod_labels{label_tier=\"dundergitcall-usercode\",label_owner_id=~\"$owner_id\",label_group_id=~\"$group_id\",label_service_id=~\"$service_id\"})\nby (label_tier, pod)*on(pod)group_right(label_tier)\nlabel_replace\n(sum by(pod,container)\n(\nrate(container_cpu_usage_seconds_total{container=~\".*\",container!=\"POD\",container!=\"\",image!=\"\"}[2m])\n), \"pod\", \"$1\", \"pod_name\", \"(.+)\")\n\n) \n\n/\n\nsum(\n\nmax(kube_pod_labels{label_tier=\"dundergitcall-usercode\",label_owner_id=~\"$owner_id\",label_group_id=~\"$group_id\",label_service_id=~\"$service_id\"})\nby (label_tier, pod)*on(pod)group_right(label_tier)\nlabel_replace\n(\n\n(kube_pod_container_resource_limits_cpu_cores{}\n\n), \"pod\", \"$1\", \"pod\", \"(.+)\")\n\n)\n\n* 100",
+          "interval": "",
+          "legendFormat": "",
+          "refId": "B"
+        }
+      ],
+      "timeFrom": null,
+      "timeShift": null,
+      "title": "CPU used / limit % ",
+      "type": "stat"
+    },
+    {
+      "datasource": null,
+      "fieldConfig": {
+        "defaults": {
+          "custom": {},
+          "mappings": [],
+          "min": 0,
+          "noValue": "0",
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "dark-orange",
+                "value": 60
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          },
+          "unit": "percent"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 4,
+        "w": 5,
+        "x": 5,
+        "y": 6
+      },
+      "id": 45,
+      "options": {
+        "colorMode": "value",
+        "graphMode": "area",
+        "justifyMode": "auto",
+        "orientation": "auto",
+        "reduceOptions": {
+          "calcs": [
+            "last"
+          ],
+          "values": false
+        }
+      },
+      "pluginVersion": "7.0.1",
+      "targets": [
+        {
+          "expr": "sum(\nmax (kube_pod_labels{label_tier=~\"dundergitcall-usercode\",label_owner_id=~\"$owner_id\",label_group_id=~\"$group_id\",service_id=~\"$service_id\"}) by (label_tier, pod)\n    * \n    on(pod)\n    \n    group_right(label_tier)\n    \n    label_replace\n    \n    (avg by(pod,container)\n    \n      ( container_memory_working_set_bytes{container!=\"POD\",container!=\"\",image!=\"\"}\n    \n    ), \"pod\", \"$1\", \"pod_name\", \"(.+)\"\n  )\n)\n\n/ \n\nsum(\nmax (kube_pod_labels{label_tier=~\"dundergitcall-usercode\",label_owner_id=~\"$owner_id\",label_group_id=~\"$group_id\",service_id=~\"$service_id\"})\nby (label_tier, pod)*on(pod)group_right(label_tier)\nlabel_replace\n(\n\n(kube_pod_container_resource_limits_memory_bytes{}\n), \"pod\", \"$1\", \"pod\", \"(.+)\")\n)\n\n* 100\n",
+          "interval": "",
+          "legendFormat": "",
+          "refId": "A"
+        }
+      ],
+      "timeFrom": null,
+      "timeShift": null,
+      "title": "Memory used \\ limit %",
+      "type": "stat"
+    },
+    {
+      "datasource": null,
+      "description": "",
+      "fieldConfig": {
+        "defaults": {
+          "custom": {},
+          "mappings": [],
+          "min": 0,
+          "noValue": "0",
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              }
+            ]
+          }
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 4,
+        "w": 5,
+        "x": 10,
+        "y": 6
+      },
+      "id": 39,
+      "options": {
+        "colorMode": "value",
+        "graphMode": "area",
+        "justifyMode": "auto",
+        "orientation": "auto",
+        "reduceOptions": {
+          "calcs": [
+            "last"
+          ],
+          "values": false
+        }
+      },
+      "pluginVersion": "7.0.1",
+      "targets": [
+        {
+          "expr": "sum(kube_pod_status_phase{phase=\"Running\"} * on(pod) group_left() max(kube_pod_labels{label_tier=\"dundergitcall-usercode\",label_owner_id=~\"$owner_id\",label_group_id=~\"$group_id\",label_service_id=~\"$service_id\"}) by (label_tier, label_owner_id, label_group_id, label_service_id, pod))",
+          "interval": "",
+          "legendFormat": "",
+          "refId": "A"
+        }
+      ],
+      "timeFrom": null,
+      "timeShift": null,
+      "title": "Running Pods",
+      "type": "stat"
+    },
+    {
+      "datasource": null,
+      "description": "",
+      "fieldConfig": {
+        "defaults": {
+          "custom": {},
+          "mappings": [],
+          "min": 0,
+          "noValue": "0",
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "light-orange",
+                "value": 0.5
+              },
+              {
+                "color": "dark-red",
+                "value": 10
+              }
+            ]
+          }
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 4,
+        "w": 3,
+        "x": 15,
+        "y": 6
+      },
+      "id": 41,
+      "options": {
+        "colorMode": "value",
+        "graphMode": "area",
+        "justifyMode": "auto",
+        "orientation": "auto",
+        "reduceOptions": {
+          "calcs": [
+            "last"
+          ],
+          "values": false
+        }
+      },
+      "pluginVersion": "7.0.1",
+      "targets": [
+        {
+          "expr": "sum(kube_pod_status_phase{phase=\"Pending\"} * on(pod) group_left() max(kube_pod_labels{label_tier=\"dundergitcall-usercode\",label_owner_id=~\"$owner_id\",label_group_id=~\"$group_id\",label_service_id=~\"$service_id\"}) by (label_tier, label_owner_id, label_group_id, label_service_id, pod))",
+          "interval": "",
+          "legendFormat": "",
+          "refId": "A"
+        }
+      ],
+      "timeFrom": null,
+      "timeShift": null,
+      "title": "Pending Pods",
+      "type": "stat"
+    },
+    {
+      "datasource": null,
+      "description": "",
+      "fieldConfig": {
+        "defaults": {
+          "custom": {},
+          "mappings": [],
+          "min": 0,
+          "noValue": "0",
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "dark-red",
+                "value": 0.5
+              }
+            ]
+          }
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 4,
+        "w": 3,
+        "x": 18,
+        "y": 6
+      },
+      "id": 40,
+      "options": {
+        "colorMode": "value",
+        "graphMode": "area",
+        "justifyMode": "auto",
+        "orientation": "auto",
+        "reduceOptions": {
+          "calcs": [
+            "last"
+          ],
+          "values": false
+        }
+      },
+      "pluginVersion": "7.0.1",
+      "targets": [
+        {
+          "expr": "sum(kube_pod_status_phase{phase=\"Failed\"} * on(pod) group_left() max(kube_pod_labels{label_tier=\"dundergitcall-usercode\",label_owner_id=~\"$owner_id\",label_group_id=~\"$group_id\",label_service_id=~\"$service_id\"}) by (label_tier, label_owner_id, label_group_id, label_service_id, pod))",
+          "interval": "",
+          "legendFormat": "",
+          "refId": "A"
+        }
+      ],
+      "timeFrom": null,
+      "timeShift": null,
+      "title": "Failed Pods",
+      "type": "stat"
+    },
+    {
+      "datasource": null,
+      "description": "",
+      "fieldConfig": {
+        "defaults": {
+          "custom": {},
+          "mappings": [],
+          "min": 0,
+          "noValue": "0",
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "dark-red",
+                "value": 0.5
+              }
+            ]
+          }
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 4,
+        "w": 3,
+        "x": 21,
+        "y": 6
+      },
+      "id": 42,
+      "options": {
+        "colorMode": "value",
+        "graphMode": "area",
+        "justifyMode": "auto",
+        "orientation": "auto",
+        "reduceOptions": {
+          "calcs": [
+            "last"
+          ],
+          "values": false
+        }
+      },
+      "pluginVersion": "7.0.1",
+      "targets": [
+        {
+          "expr": "sum(kube_pod_status_phase{phase=\"Unknown\"} * on(pod) group_left() max(kube_pod_labels{label_tier=\"dundergitcall-usercode\",label_owner_id=~\"$owner_id\",label_group_id=~\"$group_id\",label_service_id=~\"$service_id\"}) by (label_tier, label_owner_id, label_group_id, label_service_id, pod))",
           "interval": "",
           "legendFormat": "",
           "refId": "A"
@@ -276,9 +788,9 @@
       },
       "gridPos": {
         "h": 4,
-        "w": 6,
+        "w": 5,
         "x": 0,
-        "y": 4
+        "y": 10
       },
       "id": 8,
       "interval": null,
@@ -340,170 +852,6 @@
       "valueName": "current"
     },
     {
-      "datasource": null,
-      "fieldConfig": {
-        "defaults": {
-          "custom": {},
-          "mappings": [],
-          "min": 0,
-          "noValue": "0",
-          "thresholds": {
-            "mode": "absolute",
-            "steps": [
-              {
-                "color": "green",
-                "value": null
-              }
-            ]
-          }
-        },
-        "overrides": []
-      },
-      "gridPos": {
-        "h": 8,
-        "w": 6,
-        "x": 6,
-        "y": 4
-      },
-      "id": 16,
-      "options": {
-        "colorMode": "value",
-        "graphMode": "area",
-        "justifyMode": "auto",
-        "orientation": "auto",
-        "reduceOptions": {
-          "calcs": [
-            "last"
-          ],
-          "values": false
-        }
-      },
-      "pluginVersion": "7.0.1",
-      "targets": [
-        {
-          "expr": "sum(\n   rate(dundergitcall_usercode_duration_seconds_count{owner_id=~\"$owner_id\", group_id=~\"$group_id\",service_id=~\"$service_id\", result=\"done\"}[5m])\n)",
-          "legendFormat": "",
-          "refId": "A"
-        }
-      ],
-      "timeFrom": null,
-      "timeShift": null,
-      "title": "Done, Rate",
-      "type": "stat"
-    },
-    {
-      "datasource": null,
-      "fieldConfig": {
-        "defaults": {
-          "custom": {},
-          "mappings": [],
-          "min": 0,
-          "noValue": "0",
-          "thresholds": {
-            "mode": "absolute",
-            "steps": [
-              {
-                "color": "semi-dark-green",
-                "value": null
-              },
-              {
-                "color": "semi-dark-red",
-                "value": 1e-12
-              }
-            ]
-          }
-        },
-        "overrides": []
-      },
-      "gridPos": {
-        "h": 8,
-        "w": 6,
-        "x": 12,
-        "y": 4
-      },
-      "id": 15,
-      "options": {
-        "colorMode": "value",
-        "graphMode": "area",
-        "justifyMode": "auto",
-        "orientation": "auto",
-        "reduceOptions": {
-          "calcs": [
-            "mean"
-          ],
-          "values": false
-        }
-      },
-      "pluginVersion": "7.0.1",
-      "targets": [
-        {
-          "expr": "sum(\n   rate(dundergitcall_usercode_duration_seconds_count{owner_id=~\"$owner_id\", group_id=~\"$group_id\",service_id=~\"$service_id\",result=\"internal_error\"}[5m])\n)",
-          "legendFormat": "",
-          "refId": "A"
-        }
-      ],
-      "timeFrom": null,
-      "timeShift": null,
-      "title": "Internal Errors, Rate",
-      "type": "stat"
-    },
-    {
-      "datasource": null,
-      "fieldConfig": {
-        "defaults": {
-          "custom": {},
-          "mappings": [],
-          "min": 0,
-          "noValue": "0",
-          "thresholds": {
-            "mode": "absolute",
-            "steps": [
-              {
-                "color": "semi-dark-green",
-                "value": null
-              },
-              {
-                "color": "#EAB839",
-                "value": 0.01
-              }
-            ]
-          }
-        },
-        "overrides": []
-      },
-      "gridPos": {
-        "h": 8,
-        "w": 6,
-        "x": 18,
-        "y": 4
-      },
-      "id": 17,
-      "options": {
-        "colorMode": "value",
-        "graphMode": "area",
-        "justifyMode": "auto",
-        "orientation": "auto",
-        "reduceOptions": {
-          "calcs": [
-            "mean"
-          ],
-          "values": false
-        }
-      },
-      "pluginVersion": "7.0.1",
-      "targets": [
-        {
-          "expr": "sum(\n   rate(dundergitcall_usercode_duration_seconds_count{owner_id=~\"$owner_id\", group_id=~\"$group_id\",service_id=~\"$service_id\",result=\"error\"}[5m])\n)",
-          "legendFormat": "",
-          "refId": "A"
-        }
-      ],
-      "timeFrom": null,
-      "timeShift": null,
-      "title": "User Errors, Rate",
-      "type": "stat"
-    },
-    {
       "cacheTimeout": null,
       "colorBackground": false,
       "colorPostfix": true,
@@ -531,9 +879,9 @@
       },
       "gridPos": {
         "h": 4,
-        "w": 6,
-        "x": 0,
-        "y": 8
+        "w": 5,
+        "x": 5,
+        "y": 10
       },
       "id": 10,
       "interval": null,
@@ -595,6 +943,171 @@
       "valueName": "current"
     },
     {
+      "datasource": null,
+      "fieldConfig": {
+        "defaults": {
+          "custom": {},
+          "mappings": [],
+          "min": 0,
+          "noValue": "0",
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              }
+            ]
+          }
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 4,
+        "w": 5,
+        "x": 10,
+        "y": 10
+      },
+      "id": 16,
+      "options": {
+        "colorMode": "value",
+        "graphMode": "area",
+        "justifyMode": "auto",
+        "orientation": "auto",
+        "reduceOptions": {
+          "calcs": [
+            "last"
+          ],
+          "values": false
+        }
+      },
+      "pluginVersion": "7.0.1",
+      "targets": [
+        {
+          "expr": "sum(\n   irate(dundergitcall_usercode_duration_seconds_count{owner_id=~\"$owner_id\", group_id=~\"$group_id\",service_id=~\"$service_id\", result=\"done\"}[5m])\n)",
+          "interval": "",
+          "legendFormat": "",
+          "refId": "A"
+        }
+      ],
+      "timeFrom": null,
+      "timeShift": null,
+      "title": "Done, Rate",
+      "type": "stat"
+    },
+    {
+      "datasource": null,
+      "fieldConfig": {
+        "defaults": {
+          "custom": {},
+          "mappings": [],
+          "min": 0,
+          "noValue": "0",
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "semi-dark-green",
+                "value": null
+              },
+              {
+                "color": "semi-dark-red",
+                "value": 1e-12
+              }
+            ]
+          }
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 4,
+        "w": 5,
+        "x": 15,
+        "y": 10
+      },
+      "id": 15,
+      "options": {
+        "colorMode": "value",
+        "graphMode": "area",
+        "justifyMode": "auto",
+        "orientation": "auto",
+        "reduceOptions": {
+          "calcs": [
+            "mean"
+          ],
+          "values": false
+        }
+      },
+      "pluginVersion": "7.0.1",
+      "targets": [
+        {
+          "expr": "sum(\n   rate(dundergitcall_usercode_duration_seconds_count{owner_id=~\"$owner_id\", group_id=~\"$group_id\",service_id=~\"$service_id\",result=\"internal_error\"}[5m])\n)",
+          "legendFormat": "",
+          "refId": "A"
+        }
+      ],
+      "timeFrom": null,
+      "timeShift": null,
+      "title": "Internal Errors, Rate",
+      "type": "stat"
+    },
+    {
+      "datasource": null,
+      "fieldConfig": {
+        "defaults": {
+          "custom": {},
+          "mappings": [],
+          "min": 0,
+          "noValue": "0",
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "semi-dark-green",
+                "value": null
+              },
+              {
+                "color": "#EAB839",
+                "value": 0.01
+              }
+            ]
+          }
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 4,
+        "w": 4,
+        "x": 20,
+        "y": 10
+      },
+      "id": 17,
+      "options": {
+        "colorMode": "value",
+        "graphMode": "area",
+        "justifyMode": "auto",
+        "orientation": "auto",
+        "reduceOptions": {
+          "calcs": [
+            "mean"
+          ],
+          "values": false
+        }
+      },
+      "pluginVersion": "7.0.1",
+      "targets": [
+        {
+          "expr": "sum(\n   rate(dundergitcall_usercode_duration_seconds_count{owner_id=~\"$owner_id\", group_id=~\"$group_id\",service_id=~\"$service_id\",result=\"error\"}[5m])\n)",
+          "legendFormat": "",
+          "refId": "A"
+        }
+      ],
+      "timeFrom": null,
+      "timeShift": null,
+      "title": "User Errors, Rate",
+      "type": "stat"
+    },
+    {
       "cards": {
         "cardPadding": null,
         "cardRound": null
@@ -618,7 +1131,7 @@
         "h": 8,
         "w": 24,
         "x": 0,
-        "y": 12
+        "y": 14
       },
       "heatmap": {},
       "hideZeroBuckets": true,
@@ -683,7 +1196,7 @@
         "h": 8,
         "w": 24,
         "x": 0,
-        "y": 20
+        "y": 22
       },
       "hiddenSeries": false,
       "id": 4,
@@ -712,7 +1225,8 @@
       "steppedLine": false,
       "targets": [
         {
-          "expr": "sum(\n   irate(dundergitcall_usercode_duration_seconds_count{owner_id=~\"$owner_id\", group_id=~\"$group_id\",service_id=~\"$service_id\",result=\"done\"}[10m])\n) by (owner_id,group_id,service_id)\n",
+          "expr": "sum(\n   irate(dundergitcall_usercode_duration_seconds_count{owner_id=~\"$owner_id\",group_id=~\"$group_id\",service_id=~\"$service_id\",result=\"done\"}[10m])\n) by (owner_id,group_id,service_id)\n",
+          "interval": "",
           "legendFormat": "done {{owner_id}}-{{group_id}}-{{service_id}}",
           "refId": "B"
         }
@@ -765,7 +1279,7 @@
         "h": 1,
         "w": 24,
         "x": 0,
-        "y": 28
+        "y": 30
       },
       "id": 19,
       "panels": [],
@@ -790,7 +1304,7 @@
         "h": 10,
         "w": 24,
         "x": 0,
-        "y": 29
+        "y": 31
       },
       "hiddenSeries": false,
       "id": 2,
@@ -887,7 +1401,7 @@
         "h": 9,
         "w": 24,
         "x": 0,
-        "y": 39
+        "y": 41
       },
       "hiddenSeries": false,
       "id": 6,
@@ -989,7 +1503,7 @@
         "h": 10,
         "w": 24,
         "x": 0,
-        "y": 48
+        "y": 50
       },
       "hiddenSeries": false,
       "id": 24,
@@ -1094,7 +1608,7 @@
         "h": 9,
         "w": 24,
         "x": 0,
-        "y": 58
+        "y": 60
       },
       "hiddenSeries": false,
       "id": 22,
@@ -1180,7 +1694,7 @@
         "h": 1,
         "w": 24,
         "x": 0,
-        "y": 67
+        "y": 69
       },
       "id": 21,
       "panels": [],
@@ -1205,7 +1719,7 @@
         "h": 8,
         "w": 24,
         "x": 0,
-        "y": 68
+        "y": 70
       },
       "hiddenSeries": false,
       "id": 12,
@@ -1303,7 +1817,7 @@
         "h": 9,
         "w": 24,
         "x": 0,
-        "y": 76
+        "y": 78
       },
       "hiddenSeries": false,
       "id": 11,
@@ -1397,7 +1911,7 @@
         "h": 8,
         "w": 24,
         "x": 0,
-        "y": 85
+        "y": 87
       },
       "hiddenSeries": false,
       "id": 13,
@@ -1483,8 +1997,8 @@
         "allValue": ".*",
         "current": {
           "selected": false,
-          "text": "9846",
-          "value": "9846"
+          "text": "13022",
+          "value": "13022"
         },
         "datasource": "Prometheus",
         "definition": "label_values(dundergitcall_usercode_duration_seconds_count, owner_id)",
@@ -1529,93 +2043,23 @@
           },
           {
             "selected": false,
-            "text": "361792",
-            "value": "361792"
+            "text": "362249",
+            "value": "362249"
           },
           {
             "selected": false,
-            "text": "361773",
-            "value": "361773"
+            "text": "362250",
+            "value": "362250"
           },
           {
             "selected": false,
-            "text": "361798",
-            "value": "361798"
+            "text": "362251",
+            "value": "362251"
           },
           {
             "selected": false,
-            "text": "361785",
-            "value": "361785"
-          },
-          {
-            "selected": false,
-            "text": "361788",
-            "value": "361788"
-          },
-          {
-            "selected": false,
-            "text": "361746",
-            "value": "361746"
-          },
-          {
-            "selected": false,
-            "text": "361771",
-            "value": "361771"
-          },
-          {
-            "selected": false,
-            "text": "361783",
-            "value": "361783"
-          },
-          {
-            "selected": false,
-            "text": "361766",
-            "value": "361766"
-          },
-          {
-            "selected": false,
-            "text": "361777",
-            "value": "361777"
-          },
-          {
-            "selected": false,
-            "text": "361735",
-            "value": "361735"
-          },
-          {
-            "selected": false,
-            "text": "361774",
-            "value": "361774"
-          },
-          {
-            "selected": false,
-            "text": "361800",
-            "value": "361800"
-          },
-          {
-            "selected": false,
-            "text": "361781",
-            "value": "361781"
-          },
-          {
-            "selected": false,
-            "text": "361799",
-            "value": "361799"
-          },
-          {
-            "selected": false,
-            "text": "361743",
-            "value": "361743"
-          },
-          {
-            "selected": false,
-            "text": "361769",
-            "value": "361769"
-          },
-          {
-            "selected": false,
-            "text": "361768",
-            "value": "361768"
+            "text": "362252",
+            "value": "362252"
           }
         ],
         "query": "label_values(dundergitcall_usercode_duration_seconds_count{owner_id=~\"$owner_id\"}, group_id)",
@@ -1653,93 +2097,23 @@
           },
           {
             "selected": false,
-            "text": "5fabaa5c094bab0ad4001f14",
-            "value": "5fabaa5c094bab0ad4001f14"
+            "text": "5fad2d4756167c0adc154ba2",
+            "value": "5fad2d4756167c0adc154ba2"
           },
           {
             "selected": false,
-            "text": "5faba7b3094bab0ad4001e37",
-            "value": "5faba7b3094bab0ad4001e37"
+            "text": "5fad2d9c094bab0ad4155962",
+            "value": "5fad2d9c094bab0ad4155962"
           },
           {
             "selected": false,
-            "text": "5fabad4d094bab0ad4001f4a",
-            "value": "5fabad4d094bab0ad4001f4a"
+            "text": "5fad2df556167c0adc1568f3",
+            "value": "5fad2df556167c0adc1568f3"
           },
           {
             "selected": false,
-            "text": "5faba9a8094bab0ad4001ed7",
-            "value": "5faba9a8094bab0ad4001ed7"
-          },
-          {
-            "selected": false,
-            "text": "5fabaa11094bab0ad4001ef1",
-            "value": "5fabaa11094bab0ad4001ef1"
-          },
-          {
-            "selected": false,
-            "text": "5faba38656167c0adc001ccd",
-            "value": "5faba38656167c0adc001ccd"
-          },
-          {
-            "selected": false,
-            "text": "5faba74756167c0adc001dab",
-            "value": "5faba74756167c0adc001dab"
-          },
-          {
-            "selected": false,
-            "text": "5faba92a094bab0ad4001eb4",
-            "value": "5faba92a094bab0ad4001eb4"
-          },
-          {
-            "selected": false,
-            "text": "5faba5fa56167c0adc001d65",
-            "value": "5faba5fa56167c0adc001d65"
-          },
-          {
-            "selected": false,
-            "text": "5faba86b56167c0adc001dd7",
-            "value": "5faba86b56167c0adc001dd7"
-          },
-          {
-            "selected": false,
-            "text": "5faba2cd56167c0adc001c86",
-            "value": "5faba2cd56167c0adc001c86"
-          },
-          {
-            "selected": false,
-            "text": "5faba7ff56167c0adc001dbf",
-            "value": "5faba7ff56167c0adc001dbf"
-          },
-          {
-            "selected": false,
-            "text": "5fabae0856167c0adc001ed5",
-            "value": "5fabae0856167c0adc001ed5"
-          },
-          {
-            "selected": false,
-            "text": "5faba8cb094bab0ad4001e8d",
-            "value": "5faba8cb094bab0ad4001e8d"
-          },
-          {
-            "selected": false,
-            "text": "5fabadab56167c0adc001ecf",
-            "value": "5fabadab56167c0adc001ecf"
-          },
-          {
-            "selected": false,
-            "text": "5faba33956167c0adc001cb1",
-            "value": "5faba33956167c0adc001cb1"
-          },
-          {
-            "selected": false,
-            "text": "5faba6c956167c0adc001d97",
-            "value": "5faba6c956167c0adc001d97"
-          },
-          {
-            "selected": false,
-            "text": "5faba65e56167c0adc001d87",
-            "value": "5faba65e56167c0adc001d87"
+            "text": "5fad2e4056167c0adc1578b9",
+            "value": "5fad2e4056167c0adc1578b9"
           }
         ],
         "query": "label_values(dundergitcall_usercode_duration_seconds_count{owner_id=~\"$owner_id\", group_id=~\"$group_id\"}, service_id)",
@@ -1761,7 +2135,6 @@
   },
   "timepicker": {
     "refresh_intervals": [
-      "5s",
       "10s",
       "30s",
       "1m",
