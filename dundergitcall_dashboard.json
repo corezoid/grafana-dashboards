@@ -15,7 +15,8 @@
   "editable": true,
   "gnetId": null,
   "graphTooltip": 0,
-  "iteration": 1605169231446,
+  "id": 29,
+  "iteration": 1605765799822,
   "links": [],
   "panels": [
     {
@@ -1225,7 +1226,7 @@
       "steppedLine": false,
       "targets": [
         {
-          "expr": "sum(\n   irate(dundergitcall_usercode_duration_seconds_count{owner_id=~\"$owner_id\",group_id=~\"$group_id\",service_id=~\"$service_id\",result=\"done\"}[10m])\n) by (owner_id,group_id,service_id)\n",
+          "expr": "sum(\n   rate(dundergitcall_usercode_duration_seconds_count{owner_id=~\"$owner_id\",group_id=~\"$group_id\",service_id=~\"$service_id\",result=\"done\"}[3m])\n) by (owner_id,group_id,service_id)\n",
           "interval": "",
           "legendFormat": "done {{owner_id}}-{{group_id}}-{{service_id}}",
           "refId": "B"
@@ -1292,102 +1293,6 @@
       "dashLength": 10,
       "dashes": false,
       "datasource": null,
-      "fieldConfig": {
-        "defaults": {
-          "custom": {}
-        },
-        "overrides": []
-      },
-      "fill": 10,
-      "fillGradient": 6,
-      "gridPos": {
-        "h": 10,
-        "w": 24,
-        "x": 0,
-        "y": 31
-      },
-      "hiddenSeries": false,
-      "id": 2,
-      "interval": "",
-      "legend": {
-        "avg": false,
-        "current": false,
-        "hideEmpty": true,
-        "hideZero": true,
-        "max": false,
-        "min": false,
-        "show": true,
-        "total": false,
-        "values": false
-      },
-      "lines": true,
-      "linewidth": 1,
-      "nullPointMode": "null as zero",
-      "options": {
-        "dataLinks": []
-      },
-      "percentage": false,
-      "pointradius": 2,
-      "points": false,
-      "renderer": "flot",
-      "seriesOverrides": [],
-      "spaceLength": 10,
-      "stack": false,
-      "steppedLine": false,
-      "targets": [
-        {
-          "expr": "  sum  by (owner_id,group_id,service_id) (irate(dundergitcall_usercode_duration_seconds_sum{owner_id=~\"$owner_id\", group_id=~\"$group_id\",service_id=~\"$service_id\"}[2m]))\n/\n  sum  by (owner_id,group_id,service_id) (irate(dundergitcall_usercode_duration_seconds_count{owner_id=~\"$owner_id\", group_id=~\"$group_id\",service_id=~\"$service_id\"}[2m]))",
-          "legendFormat": "{{owner-_id}}-{{group_id}}-{{service_id}}",
-          "refId": "A"
-        }
-      ],
-      "thresholds": [],
-      "timeFrom": null,
-      "timeRegions": [],
-      "timeShift": null,
-      "title": "Task Duration, Avg Time",
-      "tooltip": {
-        "shared": true,
-        "sort": 0,
-        "value_type": "individual"
-      },
-      "type": "graph",
-      "xaxis": {
-        "buckets": null,
-        "mode": "time",
-        "name": null,
-        "show": true,
-        "values": []
-      },
-      "yaxes": [
-        {
-          "format": "short",
-          "label": null,
-          "logBase": 1,
-          "max": null,
-          "min": "0",
-          "show": true
-        },
-        {
-          "format": "short",
-          "label": null,
-          "logBase": 1,
-          "max": null,
-          "min": null,
-          "show": true
-        }
-      ],
-      "yaxis": {
-        "align": false,
-        "alignLevel": null
-      }
-    },
-    {
-      "aliasColors": {},
-      "bars": false,
-      "dashLength": 10,
-      "dashes": false,
-      "datasource": null,
       "decimals": 2,
       "fieldConfig": {
         "defaults": {
@@ -1401,7 +1306,7 @@
         "h": 9,
         "w": 24,
         "x": 0,
-        "y": 41
+        "y": 31
       },
       "hiddenSeries": false,
       "id": 6,
@@ -1503,7 +1408,7 @@
         "h": 10,
         "w": 24,
         "x": 0,
-        "y": 50
+        "y": 40
       },
       "hiddenSeries": false,
       "id": 24,
@@ -1608,7 +1513,7 @@
         "h": 9,
         "w": 24,
         "x": 0,
-        "y": 60
+        "y": 50
       },
       "hiddenSeries": false,
       "id": 22,
@@ -1694,7 +1599,7 @@
         "h": 1,
         "w": 24,
         "x": 0,
-        "y": 69
+        "y": 59
       },
       "id": 21,
       "panels": [],
@@ -1719,7 +1624,7 @@
         "h": 8,
         "w": 24,
         "x": 0,
-        "y": 70
+        "y": 60
       },
       "hiddenSeries": false,
       "id": 12,
@@ -1817,7 +1722,7 @@
         "h": 9,
         "w": 24,
         "x": 0,
-        "y": 78
+        "y": 68
       },
       "hiddenSeries": false,
       "id": 11,
@@ -1911,7 +1816,7 @@
         "h": 8,
         "w": 24,
         "x": 0,
-        "y": 87
+        "y": 77
       },
       "hiddenSeries": false,
       "id": 13,
@@ -1997,8 +1902,8 @@
         "allValue": ".*",
         "current": {
           "selected": false,
-          "text": "13022",
-          "value": "13022"
+          "text": "5381",
+          "value": "5381"
         },
         "datasource": "Prometheus",
         "definition": "label_values(dundergitcall_usercode_duration_seconds_count, owner_id)",
@@ -2043,23 +1948,28 @@
           },
           {
             "selected": false,
-            "text": "362249",
-            "value": "362249"
+            "text": "363526",
+            "value": "363526"
           },
           {
             "selected": false,
-            "text": "362250",
-            "value": "362250"
+            "text": "363530",
+            "value": "363530"
           },
           {
             "selected": false,
-            "text": "362251",
-            "value": "362251"
+            "text": "363533",
+            "value": "363533"
           },
           {
             "selected": false,
-            "text": "362252",
-            "value": "362252"
+            "text": "363535",
+            "value": "363535"
+          },
+          {
+            "selected": false,
+            "text": "363552",
+            "value": "363552"
           }
         ],
         "query": "label_values(dundergitcall_usercode_duration_seconds_count{owner_id=~\"$owner_id\"}, group_id)",
@@ -2097,23 +2007,28 @@
           },
           {
             "selected": false,
-            "text": "5fad2d4756167c0adc154ba2",
-            "value": "5fad2d4756167c0adc154ba2"
+            "text": "5fb2734c56167c5c51001651",
+            "value": "5fb2734c56167c5c51001651"
           },
           {
             "selected": false,
-            "text": "5fad2d9c094bab0ad4155962",
-            "value": "5fad2d9c094bab0ad4155962"
+            "text": "5fb27f1e56167c5c510016c6",
+            "value": "5fb27f1e56167c5c510016c6"
           },
           {
             "selected": false,
-            "text": "5fad2df556167c0adc1568f3",
-            "value": "5fad2df556167c0adc1568f3"
+            "text": "5fb28257094bab2bdc00173c",
+            "value": "5fb28257094bab2bdc00173c"
           },
           {
             "selected": false,
-            "text": "5fad2e4056167c0adc1578b9",
-            "value": "5fad2e4056167c0adc1578b9"
+            "text": "5fb282a5094bab2bdc00175c",
+            "value": "5fb282a5094bab2bdc00175c"
+          },
+          {
+            "selected": false,
+            "text": "5fb2941756167c5c5101448b",
+            "value": "5fb2941756167c5c5101448b"
           }
         ],
         "query": "label_values(dundergitcall_usercode_duration_seconds_count{owner_id=~\"$owner_id\", group_id=~\"$group_id\"}, service_id)",
@@ -2130,7 +2045,7 @@
     ]
   },
   "time": {
-    "from": "now-15m",
+    "from": "now-2d",
     "to": "now"
   },
   "timepicker": {
@@ -2147,7 +2062,7 @@
     ]
   },
   "timezone": "",
-  "title": "Dundergitcall",
-  "uid": "ZW_9CRCZz",
-  "version": 1
+  "title": "Dundergitcall (NEW)",
+  "uid": "ZW_9CRCZzNEW",
+  "version": 3
 }
