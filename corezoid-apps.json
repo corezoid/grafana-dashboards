@@ -15,16 +15,17 @@
   "editable": true,
   "gnetId": null,
   "graphTooltip": 0,
-  "id": 25,
-  "iteration": 1613550566453,
+  "id": 21,
+  "iteration": 1632475035129,
   "links": [],
   "panels": [
     {
       "datasource": null,
       "fieldConfig": {
         "defaults": {
-          "custom": {},
           "mappings": [],
+          "max": 100,
+          "min": 0,
           "thresholds": {
             "mode": "absolute",
             "steps": [
@@ -58,28 +59,34 @@
           "values": false
         },
         "showThresholdLabels": false,
-        "showThresholdMarkers": true
+        "showThresholdMarkers": true,
+        "text": {}
       },
-      "pluginVersion": "7.3.5",
+      "pluginVersion": "8.0.5",
       "targets": [
         {
-          "expr": "erlang_vm_port_count{service=\"$service\"} / erlang_vm_port_limit{service=\"$service\"} * 100",
+          "exemplar": true,
+          "expr": "erlang_vm_port_count{tier=\"$label\"} / erlang_vm_port_limit{tier=\"$label\"} * 100",
+          "instant": false,
           "interval": "",
-          "legendFormat": "{{pod}}",
+          "intervalFactor": 1,
+          "legendFormat": "{{kubernetes_pod_name}}",
           "refId": "A"
         }
       ],
       "timeFrom": null,
       "timeShift": null,
       "title": "Erlang VM port limits",
+      "transparent": true,
       "type": "gauge"
     },
     {
       "datasource": null,
       "fieldConfig": {
         "defaults": {
-          "custom": {},
           "mappings": [],
+          "max": 100,
+          "min": 0,
           "thresholds": {
             "mode": "absolute",
             "steps": [
@@ -113,14 +120,16 @@
           "values": false
         },
         "showThresholdLabels": false,
-        "showThresholdMarkers": true
+        "showThresholdMarkers": true,
+        "text": {}
       },
-      "pluginVersion": "7.3.5",
+      "pluginVersion": "8.0.5",
       "targets": [
         {
-          "expr": "erlang_vm_process_count{service=\"$service\"} / erlang_vm_process_limit{service=\"$service\"} * 100",
+          "exemplar": true,
+          "expr": "erlang_vm_process_count{tier=\"$label\"} / erlang_vm_process_limit{tier=\"$label\"} * 100",
           "interval": "",
-          "legendFormat": "{{pod}}",
+          "legendFormat": "{{kubernetes_pod_name}}",
           "refId": "A"
         }
       ],
@@ -133,8 +142,9 @@
       "datasource": null,
       "fieldConfig": {
         "defaults": {
-          "custom": {},
           "mappings": [],
+          "max": 100,
+          "min": 0,
           "thresholds": {
             "mode": "percentage",
             "steps": [
@@ -176,14 +186,16 @@
           "values": false
         },
         "showThresholdLabels": false,
-        "showThresholdMarkers": true
+        "showThresholdMarkers": true,
+        "text": {}
       },
-      "pluginVersion": "7.3.5",
+      "pluginVersion": "8.0.5",
       "targets": [
         {
-          "expr": "erlang_vm_schedulers_online{service=\"$service\"}/ erlang_vm_schedulers{service=\"$service\"} * 100",
+          "exemplar": true,
+          "expr": "erlang_vm_schedulers_online{tier=\"$label\"}/ erlang_vm_schedulers{tier=\"$label\"} * 100",
           "interval": "",
-          "legendFormat": "{{pod}}",
+          "legendFormat": "{{kubernetes_pod_name}}",
           "refId": "A"
         }
       ],
@@ -196,8 +208,9 @@
       "datasource": null,
       "fieldConfig": {
         "defaults": {
-          "custom": {},
           "mappings": [],
+          "max": 100,
+          "min": 0,
           "thresholds": {
             "mode": "absolute",
             "steps": [
@@ -231,14 +244,16 @@
           "values": false
         },
         "showThresholdLabels": false,
-        "showThresholdMarkers": true
+        "showThresholdMarkers": true,
+        "text": {}
       },
-      "pluginVersion": "7.3.5",
+      "pluginVersion": "8.0.5",
       "targets": [
         {
-          "expr": "erlang_vm_threads{service=\"$service\"} / erlang_vm_thread_pool_size{service=\"$service\"} * 100",
+          "exemplar": true,
+          "expr": "erlang_vm_threads{tier=\"$label\"} / erlang_vm_port_limit{tier=\"$label\"} * 100",
           "interval": "",
-          "legendFormat": "{{pod}}",
+          "legendFormat": "{{kubernetes_pod_name}}",
           "refId": "A"
         }
       ],
@@ -257,7 +272,6 @@
       "error": false,
       "fieldConfig": {
         "defaults": {
-          "custom": {},
           "unit": "deckbytes"
         },
         "overrides": []
@@ -290,7 +304,7 @@
         "alertThreshold": true
       },
       "percentage": false,
-      "pluginVersion": "7.3.5",
+      "pluginVersion": "8.0.5",
       "pointradius": 5,
       "points": false,
       "renderer": "flot",
@@ -300,7 +314,8 @@
       "steppedLine": false,
       "targets": [
         {
-          "expr": "irate(erlang_vm_statistics_bytes_output_total{service=\"$service\"}[$interval])",
+          "exemplar": true,
+          "expr": "irate(erlang_vm_statistics_bytes_output_total{tier=\"$label\"}[$interval])",
           "format": "time_series",
           "interval": "",
           "intervalFactor": 2,
@@ -310,7 +325,8 @@
           "step": 2
         },
         {
-          "expr": "irate(erlang_vm_statistics_bytes_received_total{service=\"$service\"}[$interval])",
+          "exemplar": true,
+          "expr": "irate(erlang_vm_statistics_bytes_received_total{tier=\"$label\"}[$interval])",
           "format": "time_series",
           "interval": "",
           "intervalFactor": 2,
@@ -368,12 +384,6 @@
       "datasource": "Prometheus",
       "editable": true,
       "error": false,
-      "fieldConfig": {
-        "defaults": {
-          "custom": {}
-        },
-        "overrides": []
-      },
       "fill": 1,
       "fillGradient": 0,
       "grid": {},
@@ -402,7 +412,7 @@
         "alertThreshold": true
       },
       "percentage": false,
-      "pluginVersion": "7.3.5",
+      "pluginVersion": "8.0.5",
       "pointradius": 5,
       "points": false,
       "renderer": "flot",
@@ -412,7 +422,8 @@
       "steppedLine": false,
       "targets": [
         {
-          "expr": "erlang_vm_memory_bytes_total{service=\"$service\", kind=\"processes\"}",
+          "exemplar": true,
+          "expr": "erlang_vm_memory_bytes_total{tier=\"$label\", kind=\"processes\"}",
           "format": "time_series",
           "hide": true,
           "interval": "",
@@ -422,7 +433,8 @@
           "step": 2
         },
         {
-          "expr": "erlang_vm_memory_system_bytes_total{service=\"$service\", usage=\"atom\"}",
+          "exemplar": true,
+          "expr": "erlang_vm_memory_system_bytes_total{tier=\"$label\", usage=\"atom\"}",
           "format": "time_series",
           "interval": "",
           "intervalFactor": 2,
@@ -431,7 +443,8 @@
           "step": 2
         },
         {
-          "expr": "erlang_vm_memory_system_bytes_total{service=\"$service\", usage=\"binary\"}",
+          "exemplar": true,
+          "expr": "erlang_vm_memory_system_bytes_total{tier=\"$label\", usage=\"binary\"}",
           "format": "time_series",
           "interval": "",
           "intervalFactor": 2,
@@ -440,7 +453,8 @@
           "step": 2
         },
         {
-          "expr": "erlang_vm_memory_system_bytes_total{service=\"$service\", usage=\"code\"}",
+          "exemplar": true,
+          "expr": "erlang_vm_memory_system_bytes_total{tier=\"$label\", usage=\"code\"}",
           "format": "time_series",
           "interval": "",
           "intervalFactor": 2,
@@ -449,7 +463,8 @@
           "step": 2
         },
         {
-          "expr": "erlang_vm_memory_system_bytes_total{service=\"$service\", usage=\"ets\"}",
+          "exemplar": true,
+          "expr": "erlang_vm_memory_system_bytes_total{tier=\"$label\", usage=\"ets\"}",
           "format": "time_series",
           "interval": "",
           "intervalFactor": 2,
@@ -502,8 +517,9 @@
       "datasource": null,
       "fieldConfig": {
         "defaults": {
-          "custom": {},
           "mappings": [],
+          "max": 100,
+          "min": 0,
           "thresholds": {
             "mode": "absolute",
             "steps": [
@@ -537,14 +553,16 @@
           "values": false
         },
         "showThresholdLabels": false,
-        "showThresholdMarkers": true
+        "showThresholdMarkers": true,
+        "text": {}
       },
-      "pluginVersion": "7.3.5",
+      "pluginVersion": "8.0.5",
       "targets": [
         {
-          "expr": "erlang_vm_atom_count{service=\"$service\"} / erlang_vm_atom_limit{service=\"$service\"} * 100",
+          "exemplar": true,
+          "expr": "erlang_vm_process_count{tier=\"$label\"} / erlang_vm_process_limit{tier=\"$label\"} * 100",
           "interval": "",
-          "legendFormat": "{{pod}}",
+          "legendFormat": "{{kubernetes_pod_name}}",
           "refId": "A"
         }
       ],
@@ -557,8 +575,9 @@
       "datasource": null,
       "fieldConfig": {
         "defaults": {
-          "custom": {},
           "mappings": [],
+          "max": 100,
+          "min": 0,
           "thresholds": {
             "mode": "absolute",
             "steps": [
@@ -592,14 +611,16 @@
           "values": false
         },
         "showThresholdLabels": false,
-        "showThresholdMarkers": true
+        "showThresholdMarkers": true,
+        "text": {}
       },
-      "pluginVersion": "7.3.5",
+      "pluginVersion": "8.0.5",
       "targets": [
         {
-          "expr": "erlang_vm_atom_count{service=\"$service\"} / erlang_vm_atom_limit{service=\"$service\"} * 100",
+          "exemplar": true,
+          "expr": "erlang_vm_atom_count{tier=\"$label\"} / erlang_vm_atom_limit{tier=\"$label\"} * 100",
           "interval": "",
-          "legendFormat": "{{pod}}",
+          "legendFormat": "{{kubernetes_pod_name}}",
           "refId": "A"
         }
       ],
@@ -612,10 +633,6 @@
       "datasource": null,
       "fieldConfig": {
         "defaults": {
-          "custom": {
-            "align": null,
-            "filterable": false
-          },
           "mappings": [],
           "thresholds": {
             "mode": "absolute",
@@ -652,14 +669,16 @@
           "fields": "",
           "values": false
         },
+        "text": {},
         "textMode": "auto"
       },
-      "pluginVersion": "7.3.5",
+      "pluginVersion": "8.0.5",
       "targets": [
         {
-          "expr": "cce_js_compile_error{service=\"$service\"}",
+          "exemplar": true,
+          "expr": "cce_js_compile_error{tier=\"$label\"}",
           "interval": "",
-          "legendFormat": "{{pod}}",
+          "legendFormat": "{{kubernetes_pod_name}}",
           "refId": "A"
         }
       ],
@@ -674,12 +693,6 @@
       "dashLength": 10,
       "dashes": false,
       "datasource": null,
-      "fieldConfig": {
-        "defaults": {
-          "custom": {}
-        },
-        "overrides": []
-      },
       "fill": 1,
       "fillGradient": 0,
       "gridPos": {
@@ -706,7 +719,7 @@
         "alertThreshold": true
       },
       "percentage": false,
-      "pluginVersion": "7.3.5",
+      "pluginVersion": "8.0.5",
       "pointradius": 2,
       "points": false,
       "renderer": "flot",
@@ -716,9 +729,10 @@
       "steppedLine": false,
       "targets": [
         {
-          "expr": "cce_light_cnode_map_ratio{service=\"$service\"}",
+          "exemplar": true,
+          "expr": "cce_light_cnode_map_ratio{tier=\"$label\"}",
           "interval": "",
-          "legendFormat": "{{pod}}",
+          "legendFormat": "{{kubernetes_pod_name}}",
           "refId": "A"
         }
       ],
@@ -764,7 +778,7 @@
       }
     }
   ],
-  "schemaVersion": 26,
+  "schemaVersion": 30,
   "style": "dark",
   "tags": [],
   "templating": {
@@ -772,125 +786,29 @@
       {
         "allValue": null,
         "current": {
-          "selected": true,
-          "text": "usercode-svc",
-          "value": "usercode-svc"
+          "selected": false,
+          "text": "corezoid-k8s-public",
+          "value": "corezoid-k8s-public"
         },
-        "datasource": "Prometheus",
-        "definition": "label_values(kube_service_labels{ namespace=\"corezoid\"}, service)",
+        "datasource": null,
+        "definition": "label_values(kube_pod_info, namespace)",
+        "description": null,
         "error": null,
-        "hide": 0,
+        "hide": 1,
         "includeAll": false,
-        "label": null,
+        "label": "service",
         "multi": false,
         "name": "service",
-        "options": [
-          {
-            "selected": false,
-            "text": "redis-master",
-            "value": "redis-master"
-          },
-          {
-            "selected": false,
-            "text": "pgbouncer-service",
-            "value": "pgbouncer-service"
-          },
-          {
-            "selected": false,
-            "text": "capi-service",
-            "value": "capi-service"
-          },
-          {
-            "selected": false,
-            "text": "conf-agent-server-service",
-            "value": "conf-agent-server-service"
-          },
-          {
-            "selected": false,
-            "text": "corezoid-web-adm",
-            "value": "corezoid-web-adm"
-          },
-          {
-            "selected": false,
-            "text": "corezoid-web-superadm",
-            "value": "corezoid-web-superadm"
-          },
-          {
-            "selected": false,
-            "text": "limits-service",
-            "value": "limits-service"
-          },
-          {
-            "selected": false,
-            "text": "merchant-service",
-            "value": "merchant-service"
-          },
-          {
-            "selected": false,
-            "text": "mult-service",
-            "value": "mult-service"
-          },
-          {
-            "selected": false,
-            "text": "pg-postgresql",
-            "value": "pg-postgresql"
-          },
-          {
-            "selected": false,
-            "text": "syncapi-main",
-            "value": "syncapi-main"
-          },
-          {
-            "selected": false,
-            "text": "elasticsearch-elasticsearch-master",
-            "value": "elasticsearch-elasticsearch-master"
-          },
-          {
-            "selected": false,
-            "text": "corezoid-nfs-provisioner",
-            "value": "corezoid-nfs-provisioner"
-          },
-          {
-            "selected": false,
-            "text": "rabbit-service",
-            "value": "rabbit-service"
-          },
-          {
-            "selected": false,
-            "text": "rabbit-service-discovery",
-            "value": "rabbit-service-discovery"
-          },
-          {
-            "selected": false,
-            "text": "elasticsearch-svc",
-            "value": "elasticsearch-svc"
-          },
-          {
-            "selected": false,
-            "text": "pgbouncer-svc",
-            "value": "pgbouncer-svc"
-          },
-          {
-            "selected": false,
-            "text": "redis-svc",
-            "value": "redis-svc"
-          },
-          {
-            "selected": true,
-            "text": "usercode-svc",
-            "value": "usercode-svc"
-          }
-        ],
-        "query": "label_values(kube_service_labels{ namespace=\"corezoid\"}, service)",
-        "refresh": 0,
+        "options": [],
+        "query": {
+          "query": "label_values(kube_pod_info, namespace)",
+          "refId": "StandardVariableQuery"
+        },
+        "refresh": 1,
         "regex": "",
         "skipUrlSync": false,
-        "sort": 0,
-        "tagValuesQuery": "",
-        "tags": [],
-        "tagsQuery": "",
-        "type": "query",
-        "useTags": false
+        "sort": 1,
+        "type": "query"
       },
       {
         "auto": false,
@@ -901,6 +819,7 @@
           "text": "30m",
           "value": "30m"
         },
+        "description": null,
         "error": null,
         "hide": 0,
         "label": null,
@@ -967,6 +886,57 @@
         "refresh": 2,
         "skipUrlSync": false,
         "type": "interval"
+      },
+      {
+        "allValue": null,
+        "current": {
+          "selected": true,
+          "text": "capi",
+          "value": "capi"
+        },
+        "description": null,
+        "error": null,
+        "hide": 0,
+        "includeAll": false,
+        "label": null,
+        "multi": false,
+        "name": "label",
+        "options": [
+          {
+            "selected": true,
+            "text": "capi",
+            "value": "capi"
+          },
+          {
+            "selected": false,
+            "text": "worker",
+            "value": "worker"
+          },
+          {
+            "selected": false,
+            "text": "mult",
+            "value": "mult"
+          },
+          {
+            "selected": false,
+            "text": "syncapi",
+            "value": "syncapi"
+          },
+          {
+            "selected": false,
+            "text": "limits",
+            "value": "limits"
+          },
+          {
+            "selected": false,
+            "text": "conf-agent-server",
+            "value": "conf-agent-server"
+          }
+        ],
+        "query": "capi,worker,mult,syncapi,limits,conf-agent-server",
+        "queryValue": "",
+        "skipUrlSync": false,
+        "type": "custom"
       }
     ]
   },
@@ -977,6 +947,6 @@
   "timepicker": {},
   "timezone": "",
   "title": "Corezoid Erlang",
-  "uid": "xeWl7lPMz",
-  "version": 14
+  "uid": "I5IoVhNnk",
+  "version": 10
 }
